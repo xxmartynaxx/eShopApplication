@@ -1,5 +1,4 @@
-import { Entity, ObjectIdColumn, OneToOne } from "typeorm";
-import { IsNotEmpty, IsArray } from "class-validator";
+import { Entity, ObjectIdColumn, OneToOne, OneToMany } from "typeorm";
 import { CartItem } from "./CartItem";
 import { User } from "./User";
 
@@ -8,9 +7,13 @@ export class Cart {
     @ObjectIdColumn()
     id;
 
+    // () => User  relacja dotyczy Cart i User
+    // (user) => user.cart  w User ta relacja jest określona za pomocą pola this.cart
     @OneToOne(() => User, (user) => user.cart)
     user;
 
+    // () => CartItem  relacja dotyczy Cart i CartItem
+    // ((cartItem) => cartItem.cart  w CartItem ta relacja jest określona za pomocą pola this.cart
     @OneToMany(() => CartItem, (cartItem) => cartItem.cart)
     cartItems; 
 }

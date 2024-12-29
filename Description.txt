@@ -73,3 +73,38 @@ TypeORM to narzędzie ORM (Object-Relational Mapper) dla Node.js, które:
     Tworzenie tabel i relacji (bez pisania SQL),
     Operacje CRUD (Create, Read, Update, Delete) przy użyciu metod w kodzie,
     Obsługa transakcji i relacji między tabelami w sposób obiektowy.
+
+
+
+TO DO LIST:
+
+-- METODY --
+- 
+
+-- UI --
+- na dzień dobry okno z produktami (każdy ze zdjęciem, nazwą i ceną)
+- po kliknięciu w produkt wyświetla się jeszcze category, desc, stock, sizesAvailable 
+- okienko do wyszukania produktów / filtrowania (po category, name, price, sizesAvailable)
+- okienko do zalogowania
+    * zaloguj
+    * utwórz konto (nowy User dostaje pusty Cart)
+    * zaloguj jako administrator
+
+PO ZALOGOWANIU JAKO USER
+- okno z produktami (każdy ze zdjęciem, nazwą i ceną)
+- po kliknięciu w produkt wyświetla się jeszcze category, descr, stock, sizesAvailable + możliwość
+  dodania produktu do koszyka 
+- okienko do wyszukania produktów / filtrowania
+- okienko do wylogowania
+- okienko do zobaczenia koszyka 
+    * lista dodanych produktów 
+    * możliwość modyfikacji ilości / usuwania z koszyka
+    * podsumowanie koszyka (cena, liczba artykułów)
+    * przycisk do złożenia zamówienia (stworzy się nowy obiekt w tabeli Orders)
+
+PO ZALOGOWANIU JAKO ADMIN 
+- okienko do modyfikacji bazy produktów (dodawanie / usuwanie / modyfikacja atrybutów)
+- okienko do przeglądania bazy userów
+- okienko do przeglądania aktywnych koszyków
+- okienko do przeglądania złożonych zamówień
+- okienko do wylogowania
