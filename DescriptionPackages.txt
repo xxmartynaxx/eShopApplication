@@ -5,3 +5,4 @@
     mongodb - sterownik MongoDB dla Node.js, który jest wymagany przez TypeORM do połączenia z MongoDB
     reflect-metadata - wymagane przez TypeORM do używania dekoratorów w JavaScript
 3) npm install class-validator class-transformer
+4) npm install ejs
