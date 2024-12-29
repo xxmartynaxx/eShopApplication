@@ -1,0 +1,7 @@
+1) nmp init -y
+2) npm install express typeorm mongodb reflect-metadata
+    express - framework do budowy aplikacji webowej
+    typeorm - ORM do zarządzania bazą danych
+    mongodb - sterownik MongoDB dla Node.js, który jest wymagany przez TypeORM do połączenia z MongoDB
+    reflect-metadata - wymagane przez TypeORM do używania dekoratorów w JavaScript
+3) 
