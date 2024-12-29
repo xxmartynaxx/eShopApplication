@@ -6,7 +6,7 @@ import { CartItem } from "../../domain/model/CartItem";
 import { Order } from "../../domain/model/Order";
 import { OrderItem } from "../../domain/model/OrderItem";
 
-const AppDataSource = new DataSource({
+const Database = new DataSource({
   type: "mongodb", 
   host: "localhost",
   port: 27017, 
@@ -24,4 +24,4 @@ const AppDataSource = new DataSource({
   useUnifiedTopology: true
 });
 
-export default { AppDataSource };
+export default { Database };
