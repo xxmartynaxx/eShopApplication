@@ -52,8 +52,6 @@ TO DO LIST:
 - logowanie się jako admin (userService)
 - stworzenie nowego konta (userService)
 - wylogowywanie się (userService)
-- dodanie/usunięcie/modyfikacja ilości produktów w koszyku (cartService)
-- wyświetlenie zawartości koszyka, podsumowanie produktów (cartService)
 - złożenie zamówienia (orderService)
 - walidacja 
     * user/admin role

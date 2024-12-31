@@ -9,7 +9,7 @@ export class Order {
     id;
 
     @Column()
-    @IsIn(["shipped", "delivered", "canceled"])
+    @IsIn(["in magazine", "shipped", "delivered", "canceled"])
     status;
 
     @Column()

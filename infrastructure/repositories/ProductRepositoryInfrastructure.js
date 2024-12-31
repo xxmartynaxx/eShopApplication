@@ -15,13 +15,13 @@ export class ProductRepoInfr {
 
     async showProductInfo(productId) {
         // after clicking on the specific product
-        return await this.repository.findOneBy( {id : productId} );
+        return await this.repository.findOne( {id : productId} );
     }
 
     async getProductByName(productName) {
         // search box
         // v: string
-        return await this.repository.findOneBy( {name : productName} );
+        return await this.repository.findOne( {name : productName} );
     }
 
     async filterByPrice(minPrice, maxPrice) {
@@ -54,9 +54,7 @@ export class ProductRepoInfr {
     async sortProductsByPrice(sortingOrder) {
         // v: in ["ASC", "DESC"]
         return await this.repository.find({
-            order : {
-                price : sortingOrder
-            }
+            order : { price : sortingOrder }
         });
     }
 }
