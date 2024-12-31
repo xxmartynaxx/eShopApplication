@@ -42,15 +42,12 @@ TypeORM to narzędzie ORM (Object-Relational Mapper) dla Node.js, które:
     Operacje CRUD (Create, Read, Update, Delete) przy użyciu metod w kodzie,
     Obsługa transakcji i relacji między tabelami w sposób obiektowy.
 
+https://typeorm.io/mongodb
+
 
 TO DO LIST:
 
 -- METODY --
-- wyświetlenie wszystkich produktów z bazy danych, automatycznie po odpaleniu serwera (productService)
-- wyszukanie produktu po nazwie (productService)
-- filtrowanie produktów po cenie, kategorii, rozmiarze (productService)
-- sortowanie produktów po cenie (productService)
-- wyświetlenie informacji o danym produkcie (productService)
 - logowanie się (userService)
 - logowanie się jako admin (userService)
 - stworzenie nowego konta (userService)
@@ -58,15 +55,11 @@ TO DO LIST:
 - dodanie/usunięcie/modyfikacja ilości produktów w koszyku (cartService)
 - wyświetlenie zawartości koszyka, podsumowanie produktów (cartService)
 - złożenie zamówienia (orderService)
-- dodanie/usunięcie/modyfikacja ilości produktów w bazie (adminService)
-- wyświetlenie bazy użytkowników (adminService)
-- wyświetlenie koszyków (adminService)
-- wyświetlenie złożonych zamówień (adminService)
 - walidacja 
     * user/admin role
     * price, quantity (dodatnie, min, max)
     * is not null
-    * stock wystarczający
+    * stock wystarczający (jak ktoś kupi to stock --1)
 
 
 -- Idea Projektu --
