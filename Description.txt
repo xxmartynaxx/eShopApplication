@@ -48,11 +48,9 @@ https://typeorm.io/mongodb
 TO DO LIST:
 
 -- METODY --
-- logowanie się (userService)
-- logowanie się jako admin (userService)
-- stworzenie nowego konta (userService)
-- wylogowywanie się (userService)
-- złożenie zamówienia (orderService)
+- application layer (korzystać z metod z infrastructure layer + dodać walidacje)
+- userInterface layer - routes (przechwytywanie https), views (html)
+- commonComponent layer (schowek na ogóle walidacje)
 - walidacja 
     * user/admin role
     * price, quantity (dodatnie, min, max)

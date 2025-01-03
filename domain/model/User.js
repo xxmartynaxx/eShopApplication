@@ -1,5 +1,5 @@
 import { Entity, ObjectIdColumn, Column, OneToOne, OneToMany } from "typeorm";
-import { IsEmail, IsNotEmpty, IsString, Length, IsIn } from "class-validator";
+import { IsEmail, Length, IsIn } from "class-validator";
 import { Cart } from "./Cart";
 import { Order } from "./Order";
 
@@ -7,11 +7,6 @@ import { Order } from "./Order";
 export class User {
     @ObjectIdColumn() // id obiektu w MongoDB
     id;
-
-    @Column()
-    @IsString()
-    @IsNotEmpty()
-    username;
 
     @Column()
     @IsEmail()
