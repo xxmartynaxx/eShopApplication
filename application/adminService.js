@@ -24,9 +24,13 @@ export class AdminService {
 
     async removeProduct(productId) {
         try {
+            if (Validator.isEmpty(productId)) {
+                return { success: false, message: "Invalid product ID provided" };
+            }
+
             const result = await this.adminRepository.removeProduct(productId);
             if (result.affected === 0) {
-                return { success: false, message: "Product not found or already deleted" };
+                return { success: false, message: "Product not found or not deleted" };
             }
 
             return { success: true, message: "Product removed successfully" };
@@ -40,6 +44,10 @@ export class AdminService {
 
     async modifyProduct(productId, category, name, descr, sizes, price, stock) {
         try {
+            if (Validator.isEmpty(productId)) {
+                return { success: false, message: "Invalid product ID provided" };
+            }
+            
             if (!Validator.isValidProduct(category, name, descr, sizes, price, stock)) {
                 return { success: false, message: "Invalid product data" };
             }

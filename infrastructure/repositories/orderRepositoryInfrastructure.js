@@ -26,6 +26,11 @@ export class OrderRepoInfr {
             where : { cart : cartId },
             relations : ["product"]
         });        
+
+        // skoro koszyk jest pusty, to nie ma jak złożyć zamówienia
+        if (cartItems.length == 0) {
+            return null;
+        }
         
         const newOrder = await this.orderRepository.save({
             status: "in magazine",
