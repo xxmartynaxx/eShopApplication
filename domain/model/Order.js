@@ -1,5 +1,4 @@
 import { Entity, ObjectIdColumn, Column, ManyToOne, OneToMany } from "typeorm";
-import { IsDate, IsIn } from "class-validator";
 import { OrderItem } from "./OrderItem";
 import { User } from "./User";
 
@@ -9,11 +8,10 @@ export class Order {
     id;
 
     @Column()
-    @IsIn(["in magazine", "shipped", "delivered", "canceled"])
     status;
 
+    // new Date() w trakcie złożenia zamówienia
     @Column()
-    @IsDate()
     orderDate;
 
     // relacja zakłada Foreign Key na userId

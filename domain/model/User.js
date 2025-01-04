@@ -1,5 +1,4 @@
 import { Entity, ObjectIdColumn, Column, OneToOne, OneToMany } from "typeorm";
-import { IsEmail, Length, IsIn } from "class-validator";
 import { Cart } from "./Cart";
 import { Order } from "./Order";
 
@@ -9,15 +8,12 @@ export class User {
     id;
 
     @Column()
-    @IsEmail()
     email;
 
     @Column()
-    @Length(6, 15)
     password;
 
     @Column()
-    @IsIn(["user", "admin"])
     role;
 
     // () => Cart  relacja dotyczy User i Cart

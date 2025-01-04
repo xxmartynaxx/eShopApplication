@@ -1,5 +1,4 @@
 import { Entity, ObjectIdColumn, Column, OneToMany } from "typeorm";
-import { IsNotEmpty, IsString, IsNumber, Min, IsArray } from "class-validator";
 import { CartItem } from "./CartItem";
 import { OrderItem } from "./OrderItem";
 
@@ -9,30 +8,21 @@ export class Product {
     id;
 
     @Column()
-    @IsString()
     category;
 
     @Column()
-    @IsString()
-    @IsNotEmpty()
     name;
 
     @Column()
-    @IsString()
     description;
 
     @Column(type => String)
-    @IsArray()
     sizesAvailable;
 
     @Column()
-    @IsNumber()
-    @Min(0)
     price;
 
     @Column()
-    @IsNumber()
-    @Min(0)
     stock;
 
     // () => CartItem  relacja dotyczy Product i CartItem

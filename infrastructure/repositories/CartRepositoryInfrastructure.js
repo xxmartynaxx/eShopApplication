@@ -11,7 +11,6 @@ export class CartRepoInfr {
     }
 
     async createNewCart(userId) {
-        // gdy tworzymy nowe konto dla użytkownika
         const newCart = {
             user : userId
         }
@@ -19,32 +18,29 @@ export class CartRepoInfr {
     }
 
     async getCart(userId) {
-        // gdy użytkownik zalogował się na swoje konto
         return await this.cartRepository.findOne({
             where : {user : userId}
         });
     }
 
     async addProductToCart(productId, cartId, quantity) {
-        // quantity zgodna z stock oraz positive num
         const newCartItem = {
             quantity : quantity,
             product : productId,
             cart : cartId
         }
-        await this.cartItemRepository.save(newCartItem)
+        return await this.cartItemRepository.save(newCartItem)
     }
 
     async removeProductFromCart(cartItemId) {
-        await this.cartItemRepository.delete( {id : cartItemId} );
+        const result = await this.cartItemRepository.delete( {id : cartItemId} );
+        return result.deletedCount;
     }
 
-    async changeQuantity(cartItemId, newQuantity) {
-        // quantity zgodna z stock oraz positive num
-        const updates = {};
-        updates.quantity = newQuantity;
-
-        await this.cartItemRepository.update( {id : cartItemId}, updates);
+    async changeQuantity(cartItemId, quantity) {
+        const updates = {quantity};
+        const result = await this.cartItemRepository.update( {id : cartItemId}, updates);
+        return result;
     }
 
     async showAllCartItems(cartId) {

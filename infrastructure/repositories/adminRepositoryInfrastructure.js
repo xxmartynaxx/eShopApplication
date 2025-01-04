@@ -14,9 +14,7 @@ export class AdminRepoInfr {
         })();
     }
     
-    // wyciągnie się dane z http (routes layer)?
     async addNewProduct(category, name, descr, sizes, price, stock) {
-        // v: sporo do walidacji
         const newProduct = {
             category,
             name,
@@ -26,27 +24,18 @@ export class AdminRepoInfr {
             stock
         }
 
-        await this.productRepository.save(newProduct);
+        return await this.productRepository.save(newProduct);
     }
 
     async removeProduct(productId) {
-        await this.productRepository.delete( {id : productId} );
+        const result = await this.productRepository.delete( {id : productId} );
+        return result.deletedCount;
     }
 
-    // wyciągnie się dane z http (routes layer)?
-    // na dzień dobry pola wypełnione starymi info
-    // jeśli nietknięte, to pozostają takie jakie były
-    async modifyProduct(productId, category, name, descr, sizes, price, stock) {
-        // v: sporo do walidacji
-        const updates = {};
-        updates.category = category;
-        updates.name = name;
-        updates.description = descr;
-        updates.sizesAvailable = sizes;
-        updates.price = price;
-        updates.stock = stock;
-
-        await this.productRepository.update( {id : productId}, updates);
+    async modifyProduct(productId, category, name, description, sizesAvailable, price, stock) {
+        const updates = {category, name, description, sizesAvailable, price, stock};
+        const result = await this.productRepository.update( {id : productId}, updates);
+        return result;
     }
 
     async getAllUsers() {

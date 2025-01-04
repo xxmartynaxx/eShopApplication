@@ -49,6 +49,8 @@ TO DO LIST:
 
 -- METODY --
 - application layer (korzystać z metod z infrastructure layer + dodać walidacje)
+    schemat metod w adminService - każda metoda zwraca obiekty o tym samym schemacie - ułatwi
+    to robotę przy odpowiedziach w warstwie routes
 - userInterface layer - routes (przechwytywanie https), views (html)
 - commonComponent layer (schowek na ogóle walidacje)
 - walidacja 

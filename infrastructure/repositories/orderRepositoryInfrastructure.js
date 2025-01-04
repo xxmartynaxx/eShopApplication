@@ -48,6 +48,8 @@ export class OrderRepoInfr {
         await this.orderItemRepository.save(orderItems);
         await this.cartItemRepository.deleteMany({ cart : cartId });
 
+        return newOrder;
+
     }
 
 }
