@@ -43,6 +43,10 @@ export class CartRepoInfr {
         return result;
     }
 
+    async getCartItemById(cartItemId) {
+        return await this.cartItemRepository.findOne( {id : cartItemId} );
+    }
+
     async showAllCartItems(cartId) {
         return await this.cartItemRepository.find({
             where : { cart : cartId }
@@ -56,11 +60,15 @@ export class CartRepoInfr {
             // oprócz samego CartItem, wyciągamy też info o produkcie (nazwa, opis, cena, ...)
         });
 
+        if (!cartItems || cartItems.length === 0) {
+            return { numOfCartItems: 0, totalCost: 0 };
+        }
+
         const numOfCartItems = cartItems.length;
 
         // reduce - iteruje przez tablicę i zwraca ostatecznie obliczony akumulator 
         // akumulator - tu: sum, początkowo jest 0
-        const totalCost = await cartItems.reduce((sum, item) => {
+        const totalCost = cartItems.reduce((sum, item) => {
             const productPrice = item.product.price;
             return sum + productPrice * item.quantity;
         }, 0);
