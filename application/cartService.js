@@ -8,7 +8,7 @@ export class CartService {
         this.producRepository = new ProductRepoInfr();
     }
 
-    // gdy tworzymy nowe konto dla użytkownika
+    // automatycznie gdy tworzymy nowe konto dla użytkownika
     async createNewCart(userId) {
         try {
             if (Validator.isEmpty(userId)) {
@@ -16,7 +16,10 @@ export class CartService {
             }
 
             const cart = await this.cartRepository.createNewCart(userId);
-            return { success: true, data: cart };
+
+            return cart
+                ? { success: true, data: cart }
+                : { success: false, message: "Cart not created" };
         }
 
         catch (error) {
@@ -25,7 +28,7 @@ export class CartService {
         }
     }
 
-    // gdy użytkownik zalogował się na swoje konto
+    // automatycznie gdy użytkownik zalogował się na swoje konto
     async getCart(userId) {
         try {
             if (Validator.isEmpty(userId)) {
@@ -33,7 +36,10 @@ export class CartService {
             }
 
             const cart = await this.cartRepository.getCart(userId);
-            return { success: true, data: cart };
+
+            return cart
+                ? { success: true, data: cart }
+                : { success: false, message: "Cart not found" };
         }
 
         catch (error) {
@@ -42,7 +48,6 @@ export class CartService {
         }
     }
 
-    // quantity zgodna z stock oraz positive num
     async addProductToCart(productId, cartId, quantity) {
         try {
             if (Validator.isEmpty(productId) || Validator.isEmpty(cartId)) {
@@ -55,7 +60,10 @@ export class CartService {
             }
 
             const productAdded = await this.cartRepository.addProductToCart(productId, cartId, quantity);
-            return { success: true, data: productAdded };
+
+            return productAdded
+                ? { success: true, data: productAdded }
+                : { success: false, message: "Product not added" };
         }
 
         catch (error) {
@@ -84,7 +92,6 @@ export class CartService {
         }
     }
 
-    // quantity zgodna z stock oraz positive num
     async changeQuantity(cartItemId, quantity) {
         try {
             if (Validator.isEmpty(cartItemId)) {
@@ -100,7 +107,10 @@ export class CartService {
             }
 
             const productChanged = await this.cartRepository.changeQuantity(cartItemId, quantity);
-            return { success: true, data: productChanged };
+
+            return productChanged
+                ? { success: true, data: productChanged }
+                : { success: false, message: "Quantity not changed" };
         }
 
         catch (error) {
@@ -116,11 +126,10 @@ export class CartService {
             }
 
             const items = await this.cartRepository.showAllCartItems(cartId);
-            if (items.length === 0) {
-                return { success: false, message: "No items found in the cart" };
-            }
 
-            return { success: true, data: items };
+            return items.length
+                ? { success: true, data: items }
+                : { success: false, message: "Cart not found or empty" };
         }
 
         catch (error) {

@@ -49,6 +49,10 @@ class Validator {
     static isLengthRight(arg) {
         return this.isString(arg) && arg.length >= 6 && arg.length <= 15;
     }
+
+    static isRoleRight(arg) {
+        return this.roles.includes(arg);
+    }
 }
 
 export default Validator;

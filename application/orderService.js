@@ -14,11 +14,9 @@ export class OrderService {
 
             const newOrder = await this.orderRepository.createOrder(cartId);
 
-            if (newOrder) {
-                return { success: true, data: newOrder, message: "Order created successfully" };
-            }
-
-            return { success: false, message: "Order creation failed: cart is empty or invalid" };
+            return newOrder
+                ? { success: true, data: newOrder }
+                : { success: false, message: "Order creation failed: cart is empty or invalid" };
         } 
         
         catch (error) {

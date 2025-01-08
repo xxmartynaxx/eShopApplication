@@ -13,7 +13,10 @@ export class AdminService {
             }
 
             const product = await this.adminRepository.addNewProduct(category, name, descr, sizes, price, stock);
-            return { success: true, data: product };
+
+            return product
+                ? { success: true, data: product }
+                : { success: false, message: "Product not added" };
         }
 
         catch (error) {
@@ -29,11 +32,10 @@ export class AdminService {
             }
 
             const result = await this.adminRepository.removeProduct(productId);
-            if (result.affected === 0) {
-                return { success: false, message: "Product not found or not deleted" };
-            }
 
-            return { success: true, message: "Product removed successfully" };
+            return result.affected
+                ? { success: true, message: "Product removed successfully" }
+                : { success: false, message: "Product not found or not removed" };
         } 
 
         catch (error) {
@@ -53,11 +55,10 @@ export class AdminService {
             }
 
             const result = await this.adminRepository.modifyProduct(productId, category, name, descr, sizes, price, stock);
-            if (result.affected === 0) {
-                return { success: false, message: "Product not found or not updated" };
-            }
-
-            return { success: true, message: "Product updated successfully" };
+            
+            return result.affected
+                ? { success: true, message: "Product updated successfully" }
+                : { success: false, message: "Product not found or not updated" };
         } 
         
         catch (error) {
@@ -69,7 +70,10 @@ export class AdminService {
     async getAllUsers() {
         try {
             const users = await this.adminRepository.getAllUsers();
-            return { success: true, data: users };
+
+            return users.length
+                ? { success: true, data: users }
+                : { success: false, message: "No users found" };
         } 
         
         catch (error) {
@@ -81,7 +85,10 @@ export class AdminService {
     async getAllCarts() {
         try {
             const carts = await this.adminRepository.getAllCarts();
-            return { success: true, data: carts };
+
+            return carts.length
+                ? { success: true, data: carts }
+                : { success: false, message: "No carts found" };
         } 
         
         catch (error) {
@@ -93,7 +100,10 @@ export class AdminService {
     async getAllOrders() {
         try {
             const orders = await this.adminRepository.getAllOrders();
-            return { success: true, data: orders };
+
+            return orders.length
+                ? { success: true, data: orders }
+                : { success: false, message: "No orders found" };
         } 
         
         catch (error) {

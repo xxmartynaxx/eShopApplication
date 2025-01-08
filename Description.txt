@@ -48,16 +48,18 @@ https://typeorm.io/mongodb
 TO DO LIST:
 
 -- METODY --
-- application layer (korzystać z metod z infrastructure layer + dodać walidacje)
-    schemat metod w adminService - każda metoda zwraca obiekty o tym samym schemacie - ułatwi
+- application layer - każda metoda zwraca obiekty o tym samym schemacie - ułatwi
     to robotę przy odpowiedziach w warstwie routes
-- userInterface layer - routes (przechwytywanie https), views (html)
-- commonComponent layer (schowek na ogóle walidacje)
-- walidacja 
-    * user/admin role
-    * price, quantity (dodatnie, min, max)
-    * is not null
-    * stock wystarczający (jak ktoś kupi to stock --1)
+- userInterface layer - routes (przechwytywanie https)
+- userInterface layer - views 
+    -- layouts - basicowe widoki, które będą się wyświetlać (i będą prowadzić do szczegółowych widoków w
+       odpowiednich folderach)
+    -- xViews - (prawie) każda metoda z xService ma mieć swój widok w html
+        * usuwanie / modyfikowanie produktów przez admina można jakoś ugryźć w 1 pliku poprzez
+          wyświetlenie mu listy wszystkich produktów i dodatkowych przycisków modyfikacji / usunięcia
+        * wyświetlenie listy wszystkich produktów + u góry opcje sortowania, filtrowania + opcja zobaczenia koszyka
+        * po zalogowaniu --||-- + przycisk dodania do koszyka
+
 
 
 -- Idea Projektu --
