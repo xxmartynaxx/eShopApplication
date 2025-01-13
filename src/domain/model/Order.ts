@@ -24,5 +24,5 @@ export class Order {
     // () => OrderItem  relacja dotyczy Order i OrderItem
     // (orderItem) => orderItem.order  w OrderItem ta relacja jest określona za pomocą pola this.order
     @OneToMany(() => OrderItem, (orderItem) => orderItem.order)
-    orderItems! : OrderItem[];
+    orderItems? : OrderItem[];
 }

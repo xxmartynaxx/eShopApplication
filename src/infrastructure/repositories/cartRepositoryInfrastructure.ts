@@ -1,62 +1,70 @@
 import { Database } from "../database/databaseConnection";
 import { Cart } from "../../domain/model/Cart";
 import { CartItem } from "../../domain/model/CartItem";
+import { MongoRepository } from "typeorm";
+import { ObjectId } from "mongodb";
 
 export class CartRepoInfr {
+
+    private cartRepository!: MongoRepository<Cart>;
+    private cartItemRepository!: MongoRepository<CartItem>;
+
     constructor() {
         (async () => {
-            this.cartRepository = await Database.getMongoRepository(Cart);
-            this.cartItemRepository = await Database.getMongoRepository(CartItem);
+            this.cartRepository = Database.getMongoRepository(Cart);
+            this.cartItemRepository = Database.getMongoRepository(CartItem);
         })();
     }
 
-    async createNewCart(userId) {
+    async createNewCart(userId: ObjectId) {
         const newCart = {
-            user : userId
+            user: userId
         }
         return await this.cartRepository.save(newCart);
     }
 
-    async getCart(userId) {
+    async getCart(userId: ObjectId) {
         return await this.cartRepository.findOne({
-            where : {user : userId}
+            where: { user: userId }
         });
     }
 
-    async addProductToCart(productId, cartId, quantity) {
+    async addProductToCart(productId: ObjectId, cartId: ObjectId, quantity: number) {
         const newCartItem = {
-            quantity : quantity,
-            product : productId,
-            cart : cartId
+            quantity: quantity,
+            product: productId,
+            cart: cartId
         }
         return await this.cartItemRepository.save(newCartItem)
     }
 
-    async removeProductFromCart(cartItemId) {
-        const result = await this.cartItemRepository.delete( {id : cartItemId} );
-        return result.deletedCount;
-    }
-
-    async changeQuantity(cartItemId, quantity) {
-        const updates = {quantity};
-        const result = await this.cartItemRepository.update( {id : cartItemId}, updates);
+    async removeProductFromCart(cartItemId: ObjectId) {
+        const result = await this.cartItemRepository.delete({ id: cartItemId });
         return result;
     }
 
-    async getCartItemById(cartItemId) {
-        return await this.cartItemRepository.findOne( {id : cartItemId} );
+    async changeQuantity(cartItemId: ObjectId, quantity: number) {
+        const updates = { quantity };
+        const result = await this.cartItemRepository.update({ id: cartItemId }, updates);
+        return result;
     }
 
-    async showAllCartItems(cartId) {
-        return await this.cartItemRepository.find({
-            where : { cart : cartId }
+    async getCartItemById(cartItemId: ObjectId) {
+        return await this.cartItemRepository.findOne({
+            where: { id: cartItemId }
         });
     }
 
-    async cartSummary(cartId) {
+    async showAllCartItems(cartId: ObjectId) {
+        return await this.cartItemRepository.find({
+            where: { cart: cartId }
+        });
+    }
+
+    async cartSummary(cartId: ObjectId) {
         const cartItems = await this.cartItemRepository.find({
-            where : { cart : cartId },
-            relations : ["product"]
+            where: { cart: cartId },
+            relations: ["product"]
             // oprócz samego CartItem, wyciągamy też info o produkcie (nazwa, opis, cena, ...)
         });
 

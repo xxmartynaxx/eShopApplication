@@ -4,38 +4,47 @@ import { OrderItem } from "../../domain/model/OrderItem";
 import { Cart } from "../../domain/model/Cart";
 import { CartItem } from "../../domain/model/CartItem";
 import { Product } from "../../domain/model/Product";
+import { MongoRepository } from "typeorm";
+import { ObjectId } from "mongodb";
 
 export class OrderRepoInfr {
+
+    private orderRepository!: MongoRepository<Order>;
+    private orderItemRepository!: MongoRepository<OrderItem>;
+    private cartRepository!: MongoRepository<Cart>;
+    private cartItemRepository!: MongoRepository<CartItem>;
+    private productRepository!: MongoRepository<Product>;
+
     constructor() {
         (async () => {
-            this.orderRepository = await Database.getMongoRepository(Order);
-            this.orderItemRepository = await Database.getMongoRepository(OrderItem);
-            this.cartRepository = await Database.getMongoRepository(Cart);
-            this.cartItemRepository = await Database.getMongoRepository(CartItem);
-            this.productRepository = await Database.getMongoRepository(Product);
+            this.orderRepository = Database.getMongoRepository(Order);
+            this.orderItemRepository = Database.getMongoRepository(OrderItem);
+            this.cartRepository = Database.getMongoRepository(Cart);
+            this.cartItemRepository = Database.getMongoRepository(CartItem);
+            this.productRepository = Database.getMongoRepository(Product);
         })();
     }
 
-    async createOrder(cartId) {
+    async createOrder(cartId: ObjectId) {
 
         const cart = await this.cartRepository.findOne({
-            where : { id : cartId }
+            where: { id: cartId }
         });
 
         const cartItems = await this.cartItemRepository.find({
-            where : { cart : cartId },
-            relations : ["product"]
-        });        
+            where: { cart: cartId },
+            relations: ["product"]
+        });
 
         // skoro koszyk jest pusty, to nie ma jak złożyć zamówienia
         if (cartItems.length == 0) {
             return null;
         }
-        
+
         const newOrder = await this.orderRepository.save({
             status: "in magazine",
             orderDate: new Date(),
-            user: cart.user
+            user: cart!.user
         });
 
         // przetwarzanie elementów koszyka na elementy zamówienia
@@ -47,14 +56,12 @@ export class OrderRepoInfr {
 
         for (let item of cartItems) {
             const newStock = item.product.stock - item.quantity;
-            await this.productRepository.update({ id : item.product.id }, { stock : newStock });
-        }     
+            await this.productRepository.update({ id: item.product.id }, { stock: newStock });
+        }
 
         await this.orderItemRepository.save(orderItems);
-        await this.cartItemRepository.deleteMany({ cart : cartId });
+        await this.cartItemRepository.deleteMany({ cart: cartId });
 
         return newOrder;
-
     }
-
 }

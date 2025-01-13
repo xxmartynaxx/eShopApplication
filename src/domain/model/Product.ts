@@ -6,34 +6,34 @@ import { ObjectId } from "mongodb";
 @Entity()
 export class Product {
     @ObjectIdColumn()
-    id! : ObjectId;
+    id!: ObjectId;
 
     @Column()
-    category! : string;
+    category!: string;
 
     @Column()
-    name! : string;
+    name!: string;
 
     @Column()
-    description! : string;
+    description!: string;
 
     @Column(type => String)
-    sizesAvailable! : string[];
+    sizesAvailable!: string[];
 
     @Column()
-    price! : number;
+    price!: number;
 
     @Column()
-    stock! : number;
+    stock!: number;
 
     // () => CartItem  relacja dotyczy Product i CartItem
     // (cartItem) => cartItem.product  w CartItem ta relacja jest określona za pomocą pola this.product
     @OneToMany(() => CartItem, (cartItem) => cartItem.product)
-    cartItems! : CartItem[];
+    cartItems?: CartItem[];
 
     // () => OrderItem  relacja dotyczy Product i OrderItem
     // (orderItem) => orderItem.product  w OrderItem ta relacja jest określona za pomocą pola this.product
     @OneToMany(() => OrderItem, (orderItem) => orderItem.product)
-    orderItems! : OrderItem[]; 
+    orderItems?: OrderItem[];
 
 }

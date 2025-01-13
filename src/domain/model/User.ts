@@ -25,5 +25,5 @@ export class User {
     // () => Order  relacja dotyczy User i Order
     // (order) => order.user  w Order ta relacja jest określona za pomocą pola this.user
     @OneToMany(() => Order, (order) => order.user)
-    orders! : Order[];
+    orders? : Order[];
 }

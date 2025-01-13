@@ -16,5 +16,5 @@ export class Cart {
     // () => CartItem  relacja dotyczy Cart i CartItem
     // ((cartItem) => cartItem.cart  w CartItem ta relacja jest określona za pomocą pola this.cart
     @OneToMany(() => CartItem, (cartItem) => cartItem.cart)
-    cartItems! : CartItem[]; 
+    cartItems? : CartItem[]; 
 }
