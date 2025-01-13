@@ -1,12 +1,17 @@
 import { AdminRepoInfr } from "../infrastructure/repositories/adminRepositoryInfrastructure";
 import Validator from "../commonComponent/validator";
+import { ObjectId } from "typeorm";
 
 export class AdminService {
+
+    private adminRepository: AdminRepoInfr;
+
     constructor() {
         this.adminRepository = new AdminRepoInfr();
     }
 
-    async addNewProduct(category, name, descr, sizes, price, stock) {
+    async addNewProduct(category: string, name: string, descr: string, sizes: string[],
+        price: number, stock: number) {
         try {
             if (!Validator.isValidProduct(category, name, descr, sizes, price, stock)) {
                 return { success: false, message: "Invalid product data" };
@@ -25,9 +30,9 @@ export class AdminService {
         }
     }
 
-    async removeProduct(productId) {
+    async removeProduct(productId: ObjectId) {
         try {
-            if (Validator.isEmpty(productId)) {
+            if (Validator.isEmpty(productId.toString())) {
                 return { success: false, message: "Invalid product ID provided" };
             }
 
@@ -36,7 +41,7 @@ export class AdminService {
             return result.affected
                 ? { success: true, message: "Product removed successfully" }
                 : { success: false, message: "Product not found or not removed" };
-        } 
+        }
 
         catch (error) {
             console.error("Error removing product:", error);
@@ -44,23 +49,24 @@ export class AdminService {
         }
     }
 
-    async modifyProduct(productId, category, name, descr, sizes, price, stock) {
+    async modifyProduct(productId: ObjectId, category: string, name: string, descr: string,
+        sizes: string[], price: number, stock: number) {
         try {
-            if (Validator.isEmpty(productId)) {
+            if (Validator.isEmpty(productId.toString())) {
                 return { success: false, message: "Invalid product ID provided" };
             }
-            
+
             if (!Validator.isValidProduct(category, name, descr, sizes, price, stock)) {
                 return { success: false, message: "Invalid product data" };
             }
 
             const result = await this.adminRepository.modifyProduct(productId, category, name, descr, sizes, price, stock);
-            
+
             return result.affected
                 ? { success: true, message: "Product updated successfully" }
                 : { success: false, message: "Product not found or not updated" };
-        } 
-        
+        }
+
         catch (error) {
             console.error("Error modifying product:", error);
             return { success: false, message: "Failed to modify product" };
@@ -74,8 +80,8 @@ export class AdminService {
             return users.length
                 ? { success: true, data: users }
                 : { success: false, message: "No users found" };
-        } 
-        
+        }
+
         catch (error) {
             console.error("Error fetching users:", error);
             return { success: false, message: "Failed to fetch users" };
@@ -89,8 +95,8 @@ export class AdminService {
             return carts.length
                 ? { success: true, data: carts }
                 : { success: false, message: "No carts found" };
-        } 
-        
+        }
+
         catch (error) {
             console.error("Error fetching carts:", error);
             return { success: false, message: "Failed to fetch carts" };
@@ -104,8 +110,8 @@ export class AdminService {
             return orders.length
                 ? { success: true, data: orders }
                 : { success: false, message: "No orders found" };
-        } 
-        
+        }
+
         catch (error) {
             console.error("Error fetching orders:", error);
             return { success: false, message: "Failed to fetch orders" };

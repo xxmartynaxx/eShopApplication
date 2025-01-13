@@ -1,17 +1,22 @@
 import { CartRepoInfr } from "../infrastructure/repositories/cartRepositoryInfrastructure";
 import { ProductRepoInfr } from "../infrastructure/repositories/productRepositoryInfrastructure";
 import Validator from "../commonComponent/validator";
+import { ObjectId } from "typeorm";
 
 export class CartService {
+
+    private cartRepository: CartRepoInfr;
+    private productRepository: ProductRepoInfr;
+
     constructor() {
         this.cartRepository = new CartRepoInfr();
-        this.producRepository = new ProductRepoInfr();
+        this.productRepository = new ProductRepoInfr();
     }
 
     // automatycznie gdy tworzymy nowe konto dla użytkownika
-    async createNewCart(userId) {
+    async createNewCart(userId: ObjectId) {
         try {
-            if (Validator.isEmpty(userId)) {
+            if (Validator.isEmpty(userId.toString())) {
                 return { success: false, message: "Invalid user ID provided" };
             }
 
@@ -29,9 +34,9 @@ export class CartService {
     }
 
     // automatycznie gdy użytkownik zalogował się na swoje konto
-    async getCart(userId) {
+    async getCart(userId: ObjectId) {
         try {
-            if (Validator.isEmpty(userId)) {
+            if (Validator.isEmpty(userId.toString())) {
                 return { success: false, message: "Invalid user ID provided" };
             }
 
@@ -48,14 +53,14 @@ export class CartService {
         }
     }
 
-    async addProductToCart(productId, cartId, quantity) {
+    async addProductToCart(productId: ObjectId, cartId: ObjectId, quantity: number) {
         try {
-            if (Validator.isEmpty(productId) || Validator.isEmpty(cartId)) {
+            if (Validator.isEmpty(productId.toString()) || Validator.isEmpty(cartId.toString())) {
                 return { success: false, message: "Invalid product ID or cart ID provided" };
             }
 
-            const product = await this.producRepository.showProductInfo(productId);
-            if (product.stock < quantity || !Validator.isPositiveNumber(quantity)) {
+            const product = await this.productRepository.showProductInfo(productId);
+            if (product!.stock < quantity || !Validator.isPositiveNumber(quantity)) {
                 return { success: false, message: "Quantity must be greater than 0 and not greater than stock" };
             }
 
@@ -72,18 +77,17 @@ export class CartService {
         }
     }
 
-    async removeProductFromCart(cartItemId) {
+    async removeProductFromCart(cartItemId: ObjectId) {
         try {
-            if (Validator.isEmpty(cartItemId)) {
+            if (Validator.isEmpty(cartItemId.toString())) {
                 return { success: false, message: "Invalid cart item ID provided" };
             }
 
             const result = await this.cartRepository.removeProductFromCart(cartItemId);
-            if (result.affected === 0) {
-                return { success: false, message: "Product not found or not removed from cart" };
-            }
 
-            return { success: true, message: "Product removed from cart successfully" };
+            return result.affected
+                ? { success: true, message: "Product removed from cart successfully" }
+                : { success: false, message: "Product not found or not removed from cart" };
         }
 
         catch (error) {
@@ -92,17 +96,17 @@ export class CartService {
         }
     }
 
-    async changeQuantity(cartItemId, quantity) {
+    async changeQuantity(cartItemId: ObjectId, quantity: number) {
         try {
-            if (Validator.isEmpty(cartItemId)) {
+            if (Validator.isEmpty(cartItemId.toString())) {
                 return { success: false, message: "Invalid cart item ID provided" };
             }
 
             const cartItem = await this.cartRepository.getCartItemById(cartItemId);
-            const productId = cartItem.product.id;
+            const productId = cartItem!.product.id;
 
-            const product = await this.producRepository.showProductInfo(productId);
-            if (product.stock < quantity || !Validator.isPositiveNumber(quantity)) {
+            const product = await this.productRepository.showProductInfo(productId);
+            if (product!.stock < quantity || !Validator.isPositiveNumber(quantity)) {
                 return { success: false, message: "Quantity must be greater than 0 and not greater than stock" };
             }
 
@@ -119,9 +123,9 @@ export class CartService {
         }
     }
 
-    async showAllCartItems(cartId) {
+    async showAllCartItems(cartId: ObjectId) {
         try {
-            if (Validator.isEmpty(cartId)) {
+            if (Validator.isEmpty(cartId.toString())) {
                 return { success: false, message: "Invalid cart ID provided" };
             }
 
@@ -138,9 +142,9 @@ export class CartService {
         }
     }
 
-    async cartSummary(cartId) {
+    async cartSummary(cartId: ObjectId) {
         try {
-            if (Validator.isEmpty(cartId)) {
+            if (Validator.isEmpty(cartId.toString())) {
                 return { success: false, message: "Invalid cart ID provided" };
             }
 
