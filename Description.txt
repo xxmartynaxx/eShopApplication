@@ -89,3 +89,16 @@ PO ZALOGOWANIU JAKO ADMIN
 - okienko do przeglądania koszyków
 - okienko do przeglądania złożonych zamówień
 - okienko do wylogowania
+
+
+
+README:
+-- ŚRODOWISKO --
+- Node.js
+- TypeScript
+- npm install ts-node typescript @types/node --save-dev
+
+-- ODPALANIE --
+Set-ExecutionPolicy RemoteSigned (powershell)
+node --loader ts-node/esm Application.ts (LUB tsc -> node .\Application.js)
+

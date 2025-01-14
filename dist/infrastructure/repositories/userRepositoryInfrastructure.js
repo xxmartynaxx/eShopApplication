@@ -1,25 +1,17 @@
 import { Database } from "../database/databaseConnection.js";
 import { User } from "../../domain/model/User.js";
-import { MongoRepository } from "typeorm";
-import { ObjectId } from "mongodb";
-
 export class UserRepoInfr {
-
-    private userRepository!: MongoRepository<User>;
-
     constructor() {
         (async () => {
             this.userRepository = Database.getMongoRepository(User);
         })();
     }
-
-    async findUserByEmail(email: string) {
+    async findUserByEmail(email) {
         return await this.userRepository.findOne({
             where: { email: email }
         });
     }
-
-    async logIn(email: string, password: string, role: string) {
+    async logIn(email, password, role) {
         return await this.userRepository.findOne({
             where: {
                 email: email,
@@ -28,15 +20,12 @@ export class UserRepoInfr {
             }
         });
     }
-
-    async createNewUserAccount(email: string, password: string) {
+    async createNewUserAccount(email, password) {
         const newUser = {
-            id: new ObjectId(),
             email: email,
             password: password,
             role: "user"
         };
-
         return await this.userRepository.save(newUser);
     }
 }

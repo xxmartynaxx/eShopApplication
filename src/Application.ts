@@ -5,10 +5,9 @@ import { Product } from "./domain/model/Product.js";
 import { Cart } from "./domain/model/Cart.js";
 
 
-
-const userRepository = await Database.getMongoRepository(User);
-const productRepository = await Database.getMongoRepository(Product);
-const cartRepository = await Database.getMongoRepository(Cart);
+const userRepository = Database.getMongoRepository(User);
+const productRepository = Database.getMongoRepository(Product);
+const cartRepository = Database.getMongoRepository(Cart);
 
 async function seedData() {
     // 1. Wstaw użytkowników

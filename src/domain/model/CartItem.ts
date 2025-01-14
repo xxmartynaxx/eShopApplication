@@ -1,25 +1,17 @@
-import { Entity, ObjectIdColumn, Column, ManyToOne } from "typeorm";
-import { Product } from "./Product";
-import { Cart } from "./Cart";
+import { Entity, ObjectIdColumn, Column } from "typeorm";
 import { ObjectId } from "mongodb";
 
 @Entity()
 export class CartItem {
     @ObjectIdColumn()
-    id! : ObjectId;
+    id!: ObjectId;
 
     @Column()
-    quantity! : number;
+    quantity!: number;
 
-    // relacja zakłada Foreign Key na productId
-    // () => Product  relacja dotyczy CartItem i Product
-    // (product) => product.cartItems  w Product ta relacja jest określona za pomocą pola this.cartItems
-    @ManyToOne(() => Product, (product) => product.cartItems)
-    product! : Product; 
+    @Column()
+    product!: ObjectId;
 
-    // relacja zakłada Foreign Key na cartId
-    // () => Cart  relacja dotyczy CartItem i Cart
-    // (cart) => cart.cartItems  w Cart ta relacja jest określona za pomocą pola this.cartItems
-    @ManyToOne(() => Cart, (cart) => cart.cartItems)
-    cart! : Cart;
+    @Column()
+    cart!: ObjectId;
 }

@@ -1,89 +1,67 @@
 import { Database } from "../database/databaseConnection.js";
 import { Cart } from "../../domain/model/Cart.js";
 import { CartItem } from "../../domain/model/CartItem.js";
-import { Product } from "../../domain/model/Product.js";
-import { MongoRepository } from "typeorm";
-import { ObjectId } from "mongodb";
-
 export class CartRepoInfr {
-
-    private cartRepository!: MongoRepository<Cart>;
-    private cartItemRepository!: MongoRepository<CartItem>;
-    private productRepository!: MongoRepository<Product>;
-
     constructor() {
         (async () => {
             this.cartRepository = Database.getMongoRepository(Cart);
             this.cartItemRepository = Database.getMongoRepository(CartItem);
-            this.productRepository = Database.getMongoRepository(Product);
         })();
     }
-
-    async createNewCart(userId: ObjectId) {
+    async createNewCart(userId) {
         const newCart = {
             user: userId
-        }
+        };
         return await this.cartRepository.save(newCart);
     }
-
-    async getCart(userId: ObjectId) {
+    async getCart(userId) {
         return await this.cartRepository.findOne({
             where: { user: userId }
         });
     }
-
-    async addProductToCart(productId: ObjectId, cartId: ObjectId, quantity: number) {
+    async addProductToCart(productId, cartId, quantity) {
         const newCartItem = {
             quantity: quantity,
             product: productId,
             cart: cartId
-        }
-        return await this.cartItemRepository.save(newCartItem)
+        };
+        return await this.cartItemRepository.save(newCartItem);
     }
-
-    async removeProductFromCart(cartItemId: ObjectId) {
+    async removeProductFromCart(cartItemId) {
         const result = await this.cartItemRepository.delete({ id: cartItemId });
         return result;
     }
-
-    async changeQuantity(cartItemId: ObjectId, quantity: number) {
+    async changeQuantity(cartItemId, quantity) {
         const updates = { quantity };
         const result = await this.cartItemRepository.update({ id: cartItemId }, updates);
         return result;
     }
-
-    async getCartItemById(cartItemId: ObjectId) {
+    async getCartItemById(cartItemId) {
         return await this.cartItemRepository.findOne({
             where: { id: cartItemId }
         });
     }
-
-    async showAllCartItems(cartId: ObjectId) {
+    async showAllCartItems(cartId) {
         return await this.cartItemRepository.find({
             where: { cart: cartId }
         });
     }
-
-    async cartSummary(cartId: ObjectId) {
+    async cartSummary(cartId) {
         const cartItems = await this.cartItemRepository.find({
-            where: { cart: cartId }
+            where: { cart: cartId },
+            relations: ["product"]
+            // oprócz samego CartItem, wyciągamy też info o produkcie (nazwa, opis, cena, ...)
         });
-
         if (!cartItems || cartItems.length === 0) {
             return { numOfCartItems: 0, totalCost: 0 };
         }
-
         const numOfCartItems = cartItems.length;
-
-        let totalCost = 0;
-
-        for (let item of cartItems) {
-            const product = await this.productRepository.findOne({
-                where: { id: item.product }
-            });
-            totalCost = totalCost + (product!.price) * item.quantity;
-        }
-
+        // reduce - iteruje przez tablicę i zwraca ostatecznie obliczony akumulator 
+        // akumulator - tu: sum, początkowo jest 0
+        const totalCost = cartItems.reduce((sum, item) => {
+            const productPrice = item.product.price;
+            return sum + productPrice * item.quantity;
+        }, 0);
         return { numOfCartItems, totalCost };
     }
 }
