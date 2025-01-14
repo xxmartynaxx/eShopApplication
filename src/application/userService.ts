@@ -1,14 +1,18 @@
 import { UserRepoInfr } from "../infrastructure/repositories/userRepositoryInfrastructure";
 import Validator from "../commonComponent/validator";
+import { ObjectId } from "typeorm";
 
 export class UserService {
+
+    private userRepository: UserRepoInfr;
+
     constructor() {
         this.userRepository = new UserRepoInfr();
     }
 
     // arg przechwytywane z http?
     // jeśli błędne dane to powinna się wyświetlić opcja do ponownego zalogowania
-    async logIn(email, password, role) {
+    async logIn(email: string, password: string, role: string) {
         try {
             if (!Validator.isEmail(email) || !Validator.isLengthRight(password) || 
                 !Validator.isRoleRight(role)) {
@@ -32,7 +36,7 @@ export class UserService {
         // będzie wyświetlać stronę główną dla niezalogowanych użytkowników
     }
             
-    async createNewUserAccount(email, password) {
+    async createNewUserAccount(email: string, password: string) {
         try {
             if (!Validator.isEmail(email) || !Validator.isLengthRight(password)) {
                     return { success: false, message: "Invalid email or password format" };
@@ -42,7 +46,7 @@ export class UserService {
 
             if (existingUser) {
                 // powinna wyświetlić się strona do normalnego zalogowania
-                return { success: false, message: f`User with email ${email} already exists` };
+                return { success: false, message: `User with email ${email} already exists` };
             }
 
             const newUser = await this.userRepository.createNewUserAccount(email, password);

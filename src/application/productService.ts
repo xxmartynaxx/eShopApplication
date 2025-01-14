@@ -1,7 +1,11 @@
 import { ProductRepoInfr } from "../infrastructure/repositories/productRepositoryInfrastructure";
 import Validator from "../commonComponent/validator";
+import { ObjectId } from "typeorm";
 
 export class ProductService {
+
+    private productRepository: ProductRepoInfr;
+
     constructor() {
         this.productRepository = new ProductRepoInfr();
     }
@@ -22,9 +26,9 @@ export class ProductService {
     }
 
     // after clicking on the specific product
-    async showProductInfo(productId) {
+    async showProductInfo(productId: ObjectId) {
         try {
-            if (Validator.isEmpty(productId)) {
+            if (Validator.isEmpty(productId.toString())) {
                 return { success: false, message: "Invalid product ID provided" };
             }
 
@@ -42,7 +46,7 @@ export class ProductService {
     }
 
     // search box
-    async getProductByName(productName) {
+    async getProductByName(productName: string) {
         try {
             if (!Validator.isString(productName)) {
                 return { success: false, message: "Invalid product name provided" };
@@ -62,13 +66,13 @@ export class ProductService {
     }
 
     // type boxes
-    async filterByPrice(minPrice, maxPrice) {
+    async filterByPrice(minPrice: number, maxPrice: number) {
         try {
             if (!Validator.isPositiveNumber(minPrice) || !Validator.isPositiveNumber(maxPrice) ||
                 (minPrice > maxPrice)) {
-                    return { success: false, message: "Invalid price range" };
-                }
-            
+                return { success: false, message: "Invalid price range" };
+            }
+
             const products = await this.productRepository.filterByPrice(minPrice, maxPrice);
 
             return products.length
@@ -83,7 +87,7 @@ export class ProductService {
     }
 
     // List like the one in the Express Ex2 (radio)
-    async filterByCategory(category) {
+    async filterByCategory(category: string) {
         try {
             if (!Validator.isCategoryRight(category)) {
                 return { success: false, message: "Invalid category" };
@@ -103,13 +107,13 @@ export class ProductService {
     }
 
     // List like the one in the Express Ex2 (checkboxes)
-    async filterBySize(...sizes) {
+    async filterBySize(...sizes: string[]) {
         try {
             if (!Validator.isSizeRight(sizes)) {
                 return { success: false, message: "Invalid sizes provided" };
             }
 
-            const products = await this.productRepository.filterBySize(sizes);
+            const products = await this.productRepository.filterBySize(...sizes);
 
             return products.length
                 ? { success: true, data: products }
@@ -123,7 +127,7 @@ export class ProductService {
     }
 
     // List like the one in the Express Ex2 (radio)
-    async sortProductsByPrice(sortingOrder) {
+    async sortProductsByPrice(sortingOrder: string) {
         try {
             if (!["ASC", "DESC"].includes(sortingOrder)) {
                 return { success: false, message: "Invalid sorting order" };
