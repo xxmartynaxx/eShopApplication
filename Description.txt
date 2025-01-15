@@ -100,5 +100,5 @@ README:
 
 -- ODPALANIE --
 Set-ExecutionPolicy RemoteSigned (powershell)
-node --loader ts-node/esm Application.ts (LUB tsc -> node .\Application.js)
+node --loader ts-node/esm src/main.ts (LUB tsc -> node .\Application.js)
 

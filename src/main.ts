@@ -5,11 +5,15 @@ import { Product } from "./domain/model/Product.js";
 import { Cart } from "./domain/model/Cart.js";
 
 
-const userRepository = Database.getMongoRepository(User);
-const productRepository = Database.getMongoRepository(Product);
-const cartRepository = Database.getMongoRepository(Cart);
+(async function seedData() {
+    
+    await Database.initialize(); 
+    console.log("Database has been initialized!");
 
-async function seedData() {
+    const userRepository = Database.getMongoRepository(User);
+    const productRepository = Database.getMongoRepository(Product);
+    const cartRepository = Database.getMongoRepository(Cart);
+
     // 1. Wstaw użytkowników
     const users = [
         { email: "ann.smith12@gmail.com", password: "annsPswrd12", role: "user", cart: null },
@@ -61,6 +65,4 @@ async function seedData() {
         { _id: insertedUsers.insertedIds[1] },
         { $set: { cart: insertedCarts.insertedIds[1] } }
     );
-}
-
-seedData().catch(console.error);
+})();

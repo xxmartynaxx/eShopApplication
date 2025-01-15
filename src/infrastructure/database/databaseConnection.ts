@@ -8,20 +8,14 @@ import { OrderItem } from "../../domain/model/OrderItem.js";
 
 const Database: DataSource = new DataSource({
     type: "mongodb",
-    host: "localhost",
+    host: "0.0.0.0",
     port: 27017,
     database: "eShop",
     synchronize: true,
     logging: true,
-    entities: [
-        User,
-        Product,
-        Cart,
-        CartItem,
-        Order,
-        OrderItem,
-    ],
+    entities: [User, Product, Cart, CartItem, Order, OrderItem],
     useUnifiedTopology: true
 });
-
+console.log("\nHERE\n");
+console.log(Database.options.entities);
 export { Database };
