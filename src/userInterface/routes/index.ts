@@ -1,0 +1,1 @@
+// plik do zaimportowania wszystkich tras i połączenia ich z głównym serwerem

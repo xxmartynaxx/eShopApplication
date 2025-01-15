@@ -1,23 +1,53 @@
 import { insertData } from "./infrastructure/database/insertData.js";
 import { Database } from "./infrastructure/database/databaseConnection.js";
-import { AdminService } from "./application/adminService.js";
-import { CartService } from "./application/cartService.js";
-import { OrderService } from "./application/orderService.js";
-import { ProductService } from "./application/productService.js";
-import { UserService } from "./application/userService.js";
+import express from 'express';
+import userRoutes from './userInterface/routes/userRoutes.js';
 
+const app = express();
+const PORT = 3000;
+
+// Middleware do obsługi danych formularzy
+app.use(express.urlencoded({ extended: true }));
+
+// Ustawienie EJS jako silnika widoków
+app.set('view engine', 'ejs');
+app.set('views', './userInterface/views');
+
+// Middleware do obsługi JSON (jeśli potrzebujesz API w formacie JSON)
+app.use(express.json());
+
+// Ładowanie tras użytkownika
+app.use('/api/users', userRoutes);
+
+// Strona główna
+app.get('/home', (req, res) => {
+    res.render('home', { title: 'Strona Główna' });
+});
+
+// Uruchomienie serwera
 (async function main() {
+    try {
+        console.log("Inicjalizacja bazy danych...");
+        await Database.initialize();
+        console.log("Baza danych zainicjalizowana.");
 
-    const adminRepository = new AdminService();
+        // Opcjonalne: wstawienie danych testowych do bazy
+        // await insertData();
+        // console.log("Dane testowe zostały wstawione.");
 
-    //await insertData();
+        // Start serwera
+        app.listen(PORT, () => {
+            console.log(`Serwer działa na http://localhost:${PORT}`);
+        });
 
-    await Database.initialize();
-
-    const users = await adminRepository.getAllUsers();
-    console.log(users);
-
-    await Database.destroy();
-    return;
-
+        // Wywołanie po zamknięciu (opcjonalne)
+        process.on('SIGINT', async () => {
+            console.log("Zamykanie połączenia z bazą danych...");
+            await Database.destroy();
+            console.log("Połączenie z bazą danych zamknięte.");
+            process.exit(0);
+        });
+    } catch (error) {
+        console.error("Błąd podczas inicjalizacji aplikacji:", error);
+    }
 })();

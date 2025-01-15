@@ -26,13 +26,20 @@ Cross-Cutting Concerns
 - korzystać z nich w Application Layer (Infrastructure Layer może mieć jedynie jakąś logikę do obsługi błędów połączeń z bazą danych)
 
 
-
 Jak warstwy ze sobą współpracują?
 Przykład scenariusza w sklepie internetowym:
 -- Warstwa UI/API wywołuje metodę getAllProducts() w Application Layer.
 -- Application Layer (np. ProductService) pyta Infrastructure Layer o listę produktów (ProductRepository.findAll()).
 -- Infrastructure Layer zwraca dane z bazy danych (lub pamięci), które są reprezentowane jako obiekty domeny w Domain Layer (Product).
 -- Dane są zwracane do warstwy UI/API, gdzie są wyświetlane użytkownikowi.
+
+Przykładowy proces przepływu
+Klient wysyła żądanie GET na /cart/123.
+Router (routes/cartRoutes.ts) przechwytuje żądanie i deleguje logikę do CartService.
+Serwis (application/cartService.ts) pobiera dane z repozytorium lub wykonuje logikę biznesową.
+Repozytorium (infrastructure/repositories) komunikuje się z bazą danych.
+Wynik wraca do serwisu, który zwraca go do routera, a router formatuje odpowiedź i wysyła ją do klienta.
+
 
 
 TypeORM to narzędzie ORM (Object-Relational Mapper) dla Node.js, które:
@@ -51,6 +58,7 @@ TO DO LIST:
 - application layer - każda metoda zwraca obiekty o tym samym schemacie - ułatwi
     to robotę przy odpowiedziach w warstwie routes
 - userInterface layer - routes (przechwytywanie https)
+    -- ich zadaniem jest wywołanie odpowiednich metod serwisów, które zajmują się logiką aplikacji
 - userInterface layer - views 
     -- layouts - basicowe widoki, które będą się wyświetlać (i będą prowadzić do szczegółowych widoków w
        odpowiednich folderach)
@@ -97,6 +105,8 @@ README:
 - Node.js
 - TypeScript
 - npm install ts-node typescript @types/node --save-dev
+- npm install express
+- npm install ejs (dynamiczne widoki w html)
 
 -- ODPALANIE --
 Set-ExecutionPolicy RemoteSigned (powershell)
