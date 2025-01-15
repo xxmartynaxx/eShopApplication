@@ -5,8 +5,7 @@ import { Cart } from "../../domain/model/Cart.js";
 import { CartItem } from "../../domain/model/CartItem.js";
 import { Order } from "../../domain/model/Order.js";
 import { OrderItem } from "../../domain/model/OrderItem.js";
-
-const Database: DataSource = new DataSource({
+const Database = new DataSource({
     type: "mongodb",
     host: "0.0.0.0",
     port: 27017,
@@ -16,5 +15,6 @@ const Database: DataSource = new DataSource({
     entities: [User, Product, Cart, CartItem, Order, OrderItem],
     useUnifiedTopology: true
 });
-
+console.log("\nHERE\n");
+console.log(Database.options.entities);
 export { Database };
