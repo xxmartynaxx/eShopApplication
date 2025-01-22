@@ -2,56 +2,50 @@ import { Router } from "express";
 import { UserService } from "../../application/userService";
 
 const router = Router();
-const userService = new UserService();
+const userService = new UserService(); 
 
-// GET: Strona logowania
+// GET /users – Strona główna użytkownika
+router.get('/', (req, res) => {
+    res.render('layouts/user', { title: 'User Home' });
+});
+
+// GET /users/login – Formularz logowania
 router.get('/login', (req, res) => {
-    res.render('login', { title: 'Logowanie' });
+    res.render('userViews/login', { title: 'Login' });
 });
 
-// GET: Strona rejestracji
-router.get('/register', (req, res) => {
-    res.render('register', { title: 'Rejestracja' });
-});
-
-// POST: Logowanie użytkownika
+// POST /users/login – Obsługa formularza logowania
 router.post('/login', async (req, res) => {
-    const { email, password, role } = req.body;
+    const { email, password, role } = req.body; // Pobieramy dane z formularza
+    const response = await userService.logIn(email, password, role);
 
-    try {
-        const result = await userService.logIn(email, password, role);
-
-        if (result.success) {
-            // Przekierowanie na stronę główną po zalogowaniu
-            res.redirect('/home');
-        } else {
-            // Przekierowanie z powrotem do logowania z komunikatem
-            res.render('login', { title: 'Logowanie', errorMessage: result.message });
-        }
-    } catch (error) {
-        console.error("Error during login route:", error);
-        res.status(500).render('login', { title: 'Logowanie', errorMessage: "Internal server error" });
+    if (response.success) {
+        res.redirect('/users'); 
+    } else {
+        res.render('userViews/login', { title: 'Login', error: response.message });
     }
 });
 
-// POST: Rejestracja nowego użytkownika
+// GET /users/register – Formularz rejestracji
+router.get('/register', (req, res) => {
+    res.render('userViews/register', { title: 'Register' });
+});
+
+// POST /users/register – Obsługa formularza rejestracji
 router.post('/register', async (req, res) => {
-    const { email, password } = req.body;
+    const { email, password } = req.body; // Pobieramy dane z formularza
+    const response = await userService.createNewUserAccount(email, password);
 
-    try {
-        const result = await userService.createNewUserAccount(email, password);
-
-        if (result.success) {
-            // Przekierowanie do logowania po rejestracji
-            res.redirect('/api/users/login');
-        } else {
-            // Przekierowanie z powrotem do rejestracji z komunikatem
-            res.render('register', { title: 'Rejestracja', errorMessage: result.message });
-        }
-    } catch (error) {
-        console.error("Error during registration route:", error);
-        res.status(500).render('register', { title: 'Rejestracja', errorMessage: "Internal server error" });
+    if (response.success) {
+        res.redirect('/users/login');
+    } else {
+        res.render('userViews/register', { title: 'Register', error: response.message });
     }
 });
 
-export default router;
+// GET /users/logout – Obsługa wylogowania
+router.get('/logout', (req, res) => {
+    res.render('../views/layouts/home', { title: 'Home Page' });;
+});
+
+export { router as userRoutes };

@@ -1,23 +1,22 @@
 import { insertData } from "./infrastructure/database/insertData.js";
 import { Database } from "./infrastructure/database/databaseConnection.js";
-import express from 'express';
-import userRoutes from './userInterface/routes/userRoutes.js';
+import express from "express";
+import routes from "./userInterface/routes";
+
 
 const app = express();
 const PORT = 3000;
 
 // Middleware do obsługi danych formularzy
 app.use(express.urlencoded({ extended: true }));
+app.use(express.json());
 
 // Ustawienie EJS jako silnika widoków
 app.set('view engine', 'ejs');
 app.set('views', './userInterface/views');
 
-// Middleware do obsługi JSON (jeśli potrzebujesz API w formacie JSON)
-app.use(express.json());
-
-// Ładowanie tras użytkownika
-app.use('/api/users', userRoutes);
+// Ładowanie tras 
+app.use('/', routes);
 
 // Strona główna
 app.get('/home', (req, res) => {
