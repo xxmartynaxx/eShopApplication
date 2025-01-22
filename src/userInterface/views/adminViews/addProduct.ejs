@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>
+        <%= title %>
+    </title>
+</head>
+
+<body>
+
+    <% if (error) { %>
+        <p style="color: red;">
+            <%= error %>
+        </p>
+        <% } %>
+        
+            <h2>Add a New Product</h2>
+            <form action="/admin/addProduct" method="POST">
+                <label for="category">Category:</label>
+                <input type="text" name="category" required>
+
+                <label for="name">Name:</label>
+                <input type="text" name="name" required>
+
+                <label for="descr">Description:</label>
+                <textarea name="descr" required></textarea>
+
+                <label for="sizes">Sizes (comma-separated):</label>
+                <input type="text" name="sizes">
+
+                <label for="price">Price:</label>
+                <input type="number" name="price" step="0.01" required>
+
+                <label for="stock">Stock:</label>
+                <input type="number" name="stock" required>
+
+                <button type="submit">Add Product</button>
+            </form>
+</body>
+
+</html>

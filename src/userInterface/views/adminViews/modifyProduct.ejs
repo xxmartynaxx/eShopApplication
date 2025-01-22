@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>
+        <%= title %>
+    </title>
+</head>
+
+<body>
+
+    <% if (error) { %>
+        <p style="color: red;">
+            <%= error %>
+        </p>
+        <% } %>
+
+            <h2>Modify a Product</h2>
+            <form action="/admin/modifyProduct" method="POST">
+                <input type="hidden" name="productId" value="<%= product._id %>">
+
+                <label for="category">Category:</label>
+                <input type="text" name="category" value="<%= product.category %>" required>
+
+                <label for="name">Name:</label>
+                <input type="text" name="name" value="<%= product.name %>" required>
+
+                <label for="descr">Description:</label>
+                <textarea name="descr"><%= product.descr %></textarea>
+
+                <label for="sizes">Sizes (comma-separated):</label>
+                <input type="text" name="sizes" value="<%= product.sizes %>">
+
+                <label for="price">Price:</label>
+                <input type="number" name="price" step="0.01" value="<%= product.price %>" required>
+
+                <label for="stock">Stock:</label>
+                <input type="number" name="stock" value="<%= product.stock %>" required>
+
+                <button type="submit">Modify Product</button>
+            </form>
+</body>
+
+</html>

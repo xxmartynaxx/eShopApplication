@@ -4,12 +4,12 @@ import { UserService } from "../../application/userService";
 const router = Router();
 const userService = new UserService(); 
 
-// GET /users – Strona główna użytkownika
+// GET /users – Renderowanie strony głównej użytkownika
 router.get('/', (req, res) => {
     res.render('layouts/user', { title: 'User Home' });
 });
 
-// GET /users/login – Formularz logowania
+// GET /users/login – Renderowanie formularza logowania
 router.get('/login', (req, res) => {
     res.render('userViews/login', { title: 'Login' });
 });
@@ -26,7 +26,8 @@ router.post('/login', async (req, res) => {
     }
 });
 
-// GET /users/register – Formularz rejestracji
+
+// GET /users/register – Renderowanie formularza rejestracji
 router.get('/register', (req, res) => {
     res.render('userViews/register', { title: 'Register' });
 });
@@ -42,6 +43,7 @@ router.post('/register', async (req, res) => {
         res.render('userViews/register', { title: 'Register', error: response.message });
     }
 });
+
 
 // GET /users/logout – Obsługa wylogowania
 router.get('/logout', (req, res) => {

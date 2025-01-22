@@ -10,7 +10,6 @@
 </head>
 
 <body>
-    <h1>Register</h1>
 
     <% if (error) { %>
         <p style="color: red;">
@@ -18,6 +17,7 @@
         </p>
         <% } %>
 
+            <h2>Register</h2>
             <form method="POST" action="/users/register">
                 <label for="email">Email:</label>
                 <input type="email" id="email" name="email" required>
