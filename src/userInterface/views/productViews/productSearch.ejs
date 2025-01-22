@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>
+        <%= title %>
+    </title>
+</head>
+
+<body>
+
+    <h1>Search Results</h1>
+
+    <% if (products && products.length) { %>
+        <ul>
+            <% products.forEach(product=> { %>
+                <li>
+                    <h3><a href="/products/<%= product.id %>">
+                            <%= product.name %>
+                        </a></h3>
+                    <p>Price: $<%= product.price %>
+                    </p>
+                    <p>Category: <%= product.category %>
+                    </p>
+                </li>
+                <% }) %>
+        </ul>
+        <% } else { %>
+            <p>
+                <%= message %>
+            </p>
+            <% } %>
+                <a href="/products">Back to Products</a>
+</body>
+
+</html>

@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>
+        <%= title %>
+    </title>
+</head>
+
+<body>
+
+    <!-- Sorting and Filtering Section -->
+    <div>
+        <!-- Form for product search -->
+        <form method="GET" action="/products/search">
+            <input type="text" name="productName" placeholder="Search for a product" required>
+            <button type="submit">Search</button>
+        </form>
+
+        <!-- Price Filter -->
+        <form method="GET" action="/products/filterByPrice">
+            <label for="minPrice">Min Price:</label>
+            <input type="number" id="minPrice" name="minPrice" placeholder="Min Price">
+            <label for="maxPrice">Max Price:</label>
+            <input type="number" id="maxPrice" name="maxPrice" placeholder="Max Price">
+            <button type="submit">Filter by Price</button>
+        </form>
+
+        <!-- Category Filter -->
+        <form method="GET" action="/products/filterByCategory">
+            <label for="category">Category:</label>
+            <% categories.forEach(category=> { %>
+                <label>
+                    <input type="radio" name="category" value="<%= category %>">
+                    <%= category %>
+                </label><br>
+                <% }) %>
+                    <button type="submit">Filter by Category</button>
+        </form>
+
+        <!-- Size Filter (Checkboxes) -->
+        <form method="GET" action="/products/filterBySize">
+            <label for="size">Size:</label>
+            <% sizes.forEach(size=> { %>
+                <label>
+                    <input type="checkbox" name="size" value="<%= size %>">
+                    <%= size %>
+                </label><br>
+                <% }) %>
+                    <button type="submit">Filter by Size</button>
+        </form>
+
+        <!-- Sort by Price -->
+        <form method="GET" action="/products/sortByPrice">
+            <label for="sortOrder">Sort by Price:</label>
+            <select id="sortOrder" name="sortOrder">
+                <option value="ASC">Low to High</option>
+                <option value="DESC">High to Low</option>
+            </select>
+            <button type="submit">Sort</button>
+        </form>
+    </div>
+
+    <!-- Product List -->
+    <ul>
+        <% if (products && products.length) { %>
+            <% products.forEach(product=> { %>
+                <li>
+                    <h3>
+                        <%= product.name %>
+                    </h3>
+                    <p>Price: $<%= product.price %>
+                    </p>
+                    <p>Category: <%= product.category %>
+                    </p>
+                    <p>Description: <%= product.description %>
+                    </p>
+                </li>
+                <% }) %>
+                    <% } else { %>
+                        <li>No products available.</li>
+                        <% } %>
+    </ul>
+
+</body>
+
+</html>
