@@ -1,6 +1,3 @@
-<!-- akcje do wyboru? -->
-<!-- PRODUCTS / LOGIN / CART -->
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -13,9 +10,15 @@
 </head>
 
 <body>
-    <h1>Witaj na stronie głównej!</h1>
-    <p>To jest przykład strony głównej Twojej aplikacji eShop.</p>
-    <a href="/api/users/login">Zaloguj się</a> | <a href="/api/users/register">Zarejestruj się</a>
+    <h1>Welcome to the Home Page!</h1>
+    <p>Here are your available actions:</p>
+    <ul>
+        <li> <a href="/api/products/allProducts">See Products</a> </li>
+        <li> <a href="/api/users/login">Log In</a> </li>
+        <li> <a href="/api/users/register">Register</a> </li>
+        <li> <a href="/api/cart/getCart">Cart</a> </li>
+    </ul>
+
 </body>
 
 </html>

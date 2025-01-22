@@ -1,2 +1,28 @@
-<!-- akcje do wyboru? -->
-<!-- METODY Z ADMINSERVICE -->
+<!-- Strona główna admina -->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>
+        <%= title %>
+    </title>
+</head>
+
+<body>
+    <h1>Welcome to the Admin Panel</h1>
+    <p>Here are your available actions:</p>
+    <ul>
+        <li> <a href="/admin/addProduct">Add a new Product</a> </li>
+        <li> <a href="/admin/removeProducts">Remove the Product</a> </li>
+        <li> <a href="/admin/modifyProduct">Modify the Product</a> </li>
+        <!-- może te 3 poniżej da się załatwić jednym widokiem i argumentem przekazanym do tego widoku -->
+        <!-- np.  <li> <a href="/admin/getAll">Get the Users | Carts | Orders</a> </li>  -->
+        <li> <a href="/admin/getUsers">Get the Users</a> </li>
+        <li> <a href="/admin/getCarts">Get the Carts</a> </li>
+        <li> <a href="/admin/getOrders">Get the Orders</a> </li>
+    </ul>
+</body>
+
+</html>
