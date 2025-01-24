@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>
+        <%= title %>
+    </title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            background-color: #f9f9f9;
+        }
+
+        h1 {
+            text-align: center;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+
+        th,
+        td {
+            border: 1px solid #ccc;
+            padding: 10px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+
+        tfoot td {
+            font-weight: bold;
+            text-align: right;
+        }
+
+        .actions button {
+            background-color: #007BFF;
+            color: #fff;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .actions button:hover {
+            background-color: #0056b3;
+        }
+
+        .summary {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .summary p {
+            margin: 5px 0;
+        }
+
+        .buttons {
+            text-align: center;
+        }
+
+        .buttons a,
+        .buttons form button {
+            display: inline-block;
+            margin: 5px;
+            padding: 10px 20px;
+            text-decoration: none;
+            background-color: #28a745;
+            color: white;
+            border-radius: 4px;
+            border: none;
+            cursor: pointer;
+        }
+
+        .buttons a:hover,
+        .buttons form button:hover {
+            background-color: #218838;
+        }
+
+        .buttons a.secondary {
+            background-color: #6c757d;
+        }
+
+        .buttons a.secondary:hover {
+            background-color: #5a6268;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>Cart Items</h1>
+
+        <!-- Display Cart Items -->
+        <table>
+            <thead>
+                <tr>
+                    <th>Product</th>
+                    <th>Quantity</th>
+                    <th>Price</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% if (items.length> 0) { %>
+                    <% items.forEach(item=> { %>
+                        <tr>
+                            <td>
+                                <%= item.productName %>
+                            </td>
+                            <td>
+                                <form action="/cart/changeQuantity" method="POST" class="actions">
+                                    <input type="hidden" name="cartItemId" value="<%= item._id %>">
+                                    <input type="hidden" name="cartId" value="<%= cartId %>">
+                                    <input type="number" name="quantity" value="<%= item.quantity %>" min="1" required>
+                                    <button type="submit">Update</button>
+                                </form>
+                            </td>
+                            <td>
+                                <%= item.price %> PLN
+                            </td>
+                            <td>
+                                <form action="/cart/removeItem" method="POST" class="actions">
+                                    <input type="hidden" name="cartItemId" value="<%= item._id %>">
+                                    <input type="hidden" name="cartId" value="<%= cartId %>">
+                                    <button type="submit" style="background-color: #dc3545;">Remove</button>
+                                </form>
+                            </td>
+                        </tr>
+                        <% }) %>
+                            <% } else { %>
+                                <tr>
+                                    <td colspan="4" style="text-align: center;">Your cart is empty!</td>
+                                </tr>
+                                <% } %>
+            </tbody>
+        </table>
+
+        <!-- Cart Summary -->
+        <div class="summary">
+            <p>Number of Items: <strong>
+                    <%= numOfCartItems %>
+                </strong></p>
+            <p>Total Cost: <strong>
+                    <%= totalCost %> PLN
+                </strong></p>
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="buttons">
+            <form action="/createOrder" method="POST" style="display: inline;">
+                <input type="hidden" name="cartId" value="<%= cartId %>">
+                <button type="submit">Create Order</button>
+            </form>
+            <a href="/products/getAll" class="secondary">Back to Shop</a>
+        </div>
+    </div>
+</body>
+
+</html>

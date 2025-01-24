@@ -20,7 +20,7 @@ router.get('/products', async (req, res) => {
             sizes: availableSizes
         });
     } else {
-        res.render('productViews/productDetail', { title: 'Product List', message: result.message });
+        res.render('productViews/productDetail', { title: 'Products', message: result.message });
     }
 });
 
