@@ -1,7 +1,7 @@
 import { Router, Request, Response } from "express";
 import { ObjectId } from "mongodb";
-import { AdminService } from "../../application/adminService";
-import { ProductService } from "../../application/productService";
+import { AdminService } from "../../application/adminService.js";
+import { ProductService } from "../../application/productService.js";
 
 const router = Router();
 const adminService = new AdminService();

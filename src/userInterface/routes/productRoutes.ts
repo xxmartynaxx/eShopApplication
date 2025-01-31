@@ -1,7 +1,7 @@
 import { Router } from "express";
 import { ObjectId } from "mongodb";
-import { ProductService } from "../../application/productService";
-import Validator from "../../commonComponent/validator";
+import { ProductService } from "../../application/productService.js";
+import Validator from "../../commonComponent/validator.js";
 
 const router = Router();
 const productService = new ProductService();

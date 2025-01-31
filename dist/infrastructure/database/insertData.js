@@ -9,15 +9,12 @@ export async function insertData() {
     const userRepository = Database.getMongoRepository(User);
     const productRepository = Database.getMongoRepository(Product);
     const cartRepository = Database.getMongoRepository(Cart);
-    // 1. Wstaw użytkowników
     const users = [
         { email: "ann.smith12@gmail.com", password: "annsPswrd12", role: "user", cart: null },
         { email: "bob.mcTaylor@onet.pl", password: "makeUSAGreatAgain", role: "user", cart: null },
         { email: "jane.doe@interia.pl", password: "boringPswrd8", role: "admin", cart: null }
     ];
     const insertedUsers = await userRepository.insertMany(users);
-    console.log("Inserted Users:", insertedUsers);
-    // 2. Wstaw produkty
     const products = [
         {
             category: "tops",
@@ -37,15 +34,11 @@ export async function insertData() {
         }
     ];
     const insertedProducts = await productRepository.insertMany(products);
-    console.log("Inserted Products:", insertedProducts);
-    // 3. Wstaw koszyki
     const carts = [
         { user: insertedUsers.insertedIds[0] }, // Koszyk dla Ann
         { user: insertedUsers.insertedIds[1] } // Koszyk dla Boba
     ];
     const insertedCarts = await cartRepository.insertMany(carts);
-    console.log("Inserted Carts:", insertedCarts);
-    // Zaktualizuj referencje użytkowników do koszyków
     await userRepository.updateOne({ _id: insertedUsers.insertedIds[0] }, { $set: { cart: insertedCarts.insertedIds[0] } });
     await userRepository.updateOne({ _id: insertedUsers.insertedIds[1] }, { $set: { cart: insertedCarts.insertedIds[1] } });
     console.log("Data inserted successfully.");

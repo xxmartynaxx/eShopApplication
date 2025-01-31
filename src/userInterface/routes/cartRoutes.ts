@@ -1,7 +1,7 @@
 // NA RAZIE JEDEN WIELKI SYF
 import { Router } from "express";
-import { CartService } from "../../application/cartService";
-import { OrderService } from "../../application/orderService";
+import { CartService } from "../../application/cartService.js";
+import { OrderService } from "../../application/orderService.js";
 import { ObjectId } from "mongodb";
 
 const router = Router();

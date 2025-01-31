@@ -1,7 +1,7 @@
 import { insertData } from "./infrastructure/database/insertData.js";
 import { Database } from "./infrastructure/database/databaseConnection.js";
 import express from "express";
-import routes from "./userInterface/routes";
+import routes from "./userInterface/routes/index.js";
 // import cookieParser from "cookie-parser";
 
 
@@ -30,9 +30,9 @@ app.get('/home', (req, res) => {
 // Uruchomienie serwera
 (async function main() {
     try {
-        console.log("Inicjalizacja bazy danych...");
+        console.log("\nInicjalizacja bazy danych...");
         await Database.initialize();
-        console.log("Baza danych zainicjalizowana.");
+        console.log("\nBaza danych zainicjalizowana.");
 
         // Opcjonalne: wstawienie danych testowych do bazy
         // await insertData();
@@ -45,9 +45,9 @@ app.get('/home', (req, res) => {
 
         // Wywołanie po zamknięciu (opcjonalne)
         process.on('SIGINT', async () => {
-            console.log("Zamykanie połączenia z bazą danych...");
+            console.log("\nZamykanie połączenia z bazą danych...");
             await Database.destroy();
-            console.log("Połączenie z bazą danych zamknięte.");
+            console.log("\nPołączenie z bazą danych zamknięte.");
             process.exit(0);
         });
     } catch (error) {

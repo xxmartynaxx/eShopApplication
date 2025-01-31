@@ -1,10 +1,10 @@
 // plik index.ts do zaimportowania wszystkich tras i połączenia ich z głównym serwerem
 
 import { Router } from "express";
-import { adminRoutes } from "./adminRoutes";
-import { cartRoutes } from "./cartRoutes";
-import { productRoutes } from "./productRoutes";
-import { userRoutes } from "./userRoutes";
+import { adminRoutes } from "./adminRoutes.js";
+import { cartRoutes } from "./cartRoutes.js";
+import { productRoutes } from "./productRoutes.js";
+import { userRoutes } from "./userRoutes.js";
 
 const router = Router();
 

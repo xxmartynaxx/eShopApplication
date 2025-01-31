@@ -15,6 +15,4 @@ const Database = new DataSource({
     entities: [User, Product, Cart, CartItem, Order, OrderItem],
     useUnifiedTopology: true
 });
-console.log("\nHERE\n");
-console.log(Database.options.entities);
 export { Database };
