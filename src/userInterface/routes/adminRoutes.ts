@@ -38,7 +38,7 @@ router.get('/removeProduct', (req, res) => {
 
 // POST /admin/removeProduct – Obsługa formularza usuwania produktu
 router.post('/removeProduct', async (req, res) => {
-    const { productId } = req.body;
+    const productId = req.body.productId;
     const response = await adminService.removeProduct(productId);
 
     if (response.success) {
@@ -48,10 +48,25 @@ router.post('/removeProduct', async (req, res) => {
     }
 });
 
+// GET /admin/modifyProduct – Renderowanie formularza wyboru produktu do modyfikacji
+router.get('/modifyProduct', (req, res) => {
+    res.render('adminViews/modifyProduct', { title: 'Choose product to modify' });
+});
+
+// POST /admin/chosenModifyProduct – Obsługa formularza wyboru produktu (nazwa dziwna, żeby się nie gryzła)
+router.post('/chosenModifyProduct', (req, res) => {
+    const productId = req.body.productId;
+
+    if (!productId) {
+        res.render('adminViews/modifyProduct', { title: 'Choose product to modify', error: 'Type in the correct ID '})
+    }
+
+    res.redirect(`/modifyProduct/${productId}`); // Przekierowanie do edycji konkretnego produktu
+});
 
 // GET /admin/modifyProduct/:productId – Renderowanie formularza modyfikacji produktu (z danymi produktu)
 router.get('/modifyProduct/:productId', async (req, res) => {
-    const { productId } = req.params;
+    const productId = req.params.productId;
     const id = new ObjectId(productId);
 
     const product = await productService.showProductInfo(id);

@@ -9,7 +9,7 @@ const availableCategories = Validator.arrayOfCategories;
 const availableSizes = Validator.arrayOfSizes;
 
 // GET /products – Renderowanie strony głównej z produktami
-router.get('/products', async (req, res) => {
+router.get('/', async (req, res) => {
     const result = await productService.getAllProducts();
 
     if (result.success) {
@@ -64,8 +64,13 @@ router.get('/filterByCategory', async (req, res) => {
 // GET /products/filterBySize - Renderowanie strony z produktami (filtrowanie po rozmiarze)
 router.get('/products/filterBySize', async (req, res) => {
     const sizes = req.query.size; 
-    if (Array.isArray(sizes) && sizes.length > 0) {
-        const result = await productService.filterBySize(...sizes);
+    if (sizes) {
+        // Upewniamy się, że każda wartość w tablicy jest stringiem
+        let sizesArray: string[] = Array.isArray(sizes) 
+            ? sizes.map(size => String(size)) 
+            : [String(sizes)];
+        const result = await productService.filterBySize(...sizesArray);
+        
         res.render('productViews/getAll', {
             title: 'Product List',
             products: result.data || [],
@@ -102,7 +107,7 @@ router.get('/sortByPrice', async (req, res) => {
 });
 
 // GET /products/:productId - Renderowanie szczegółów jednego produktu
-router.get('/products/:productId', async (req, res) => {
+router.get('/:productId', async (req, res) => {
     const productId = req.params.productId;
     const id = new ObjectId(productId);
     const result = await productService.showProductInfo(id);

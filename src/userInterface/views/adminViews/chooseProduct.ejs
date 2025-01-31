@@ -1,0 +1,26 @@
+<!-- Formularz wyboru produktu do modyfikacji (po id) -->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>
+        <%= title %>
+    </title>
+</head>
+
+<body>
+    <h1>Type in the ID of the product you want to modify:</h1>
+    <form action="/admin/chosenModifyProduct" method="POST">
+        <label for="productId">Product ID:</label>
+        <input type="text" id="productId" name="productId" required>
+        <button type="submit">Modify product</button>
+        <% if (error) { %>
+            <div style="color: red;">
+            <%= error %>
+            </div>
+        <% } %>
+    </form>
+</body>
+</html>

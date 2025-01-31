@@ -2,10 +2,14 @@ import { insertData } from "./infrastructure/database/insertData.js";
 import { Database } from "./infrastructure/database/databaseConnection.js";
 import express from "express";
 import routes from "./userInterface/routes";
+// import cookieParser from "cookie-parser";
 
 
 const app = express();
 const PORT = 3000;
+
+// Middleware do obsługi ciasteczek
+// app.use(cookieParser());
 
 // Middleware do obsługi danych formularzy
 app.use(express.urlencoded({ extended: true }));
