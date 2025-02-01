@@ -10,14 +10,21 @@
 </head>
 
 <body>
-    <h1>List of type</h1>
-    <ul>
-        <% data.forEach(item=> { %>
-            <li>
-                <%= JSON.stringify(item) %>
-            </li>
-            <% }); %>
-    </ul>
+    <h1>List of <%= type %></h1>
+    <% if (Array.isArray(data) && data.length > 0) { %>
+        <ul>
+            <% data.forEach(item=> { %>
+                <li>
+                    <%= JSON.stringify(item, null, 2) %>
+                </li>
+                <% }); %>
+        </ul>
+    <% } else { %>
+        <p>
+            <%= message %>
+        </p>
+    <% } %>
+    <a href="/admin">Back to home</a>
 </body>
 
 </html>

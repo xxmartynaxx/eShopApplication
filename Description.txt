@@ -68,6 +68,7 @@ TO DO LIST:
         * wyświetlenie listy wszystkich produktów + u góry opcje sortowania, filtrowania + opcja zobaczenia koszyka
         * po zalogowaniu --||-- + przycisk dodania do koszyka
 
+- naprawa szukania produktów w productViews/getAll a productRoutes -> to są bazodanowe rzeczy i nie chcę się w to zagłębiać XD
 
 
 -- Idea Projektu --

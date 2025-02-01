@@ -117,4 +117,19 @@ export class AdminService {
             return { success: false, message: "Failed to fetch orders" };
         }
     }
+
+    async getAllProducts() {
+        try {
+            const products = await this.adminRepository.getAllProducts();
+
+            return products.length
+                ? { success: true, data: products }
+                : { success: false, message: "No products found" };
+        }
+
+        catch (error) {
+            console.error("Error fetching products:", error);
+            return { success: false, message: "Failed to fetch products" };
+        }
+    }
 }

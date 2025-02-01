@@ -4,7 +4,7 @@ import { ObjectId } from "mongodb";
 @Entity()
 export class Product {
     @ObjectIdColumn()
-    id!: ObjectId;
+    _id?: ObjectId;
 
     @Column()
     category!: string;

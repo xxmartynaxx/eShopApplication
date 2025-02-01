@@ -15,32 +15,45 @@
         <p style="color: red;">
             <%= error %>
         </p>
-        <% } %>
+    <% } %>
 
-            <h2>Modify a Product</h2>
-            <form action="/admin/modifyProduct" method="POST">
-                <input type="hidden" name="productId" value="<%= product._id %>">
+    <h2>Modify a Product</h2>
+    <form action="/admin/modifyProduct" method="POST">
+        
+        <input type="hidden" name="productId" value="<%= product._id ? product._id.toString() : '' %>">
 
-                <label for="category">Category:</label>
-                <input type="text" name="category" value="<%= product.category %>" required>
+        <!-- Category Selection (Radio Buttons) -->
+        <label>Category:</label><br>
+        <% availableCategories.forEach(category => { %>
+            <label>
+                <input type="radio" name="category" value="<%= category %>" <%= product.category === category ? "checked" : "" %> required>
+                <%= category %>
+            </label><br>
+        <% }) %><br>
 
-                <label for="name">Name:</label>
-                <input type="text" name="name" value="<%= product.name %>" required>
+        <label for="name">Name:</label>
+        <input type="text" name="name" value="<%= product.name %>" required><br><br>
 
-                <label for="descr">Description:</label>
-                <textarea name="descr"><%= product.descr %></textarea>
+        <label for="descr">Description:</label>
+        <textarea name="descr"><%= product.description %></textarea><br><br>
 
-                <label for="sizes">Sizes (comma-separated):</label>
-                <input type="text" name="sizes" value="<%= product.sizes %>">
+        <!-- Size Selection (Checkboxes) -->
+        <label>Sizes:</label><br>
+        <% availableSizes.forEach(size => { %>
+            <label>
+                <input type="checkbox" name="sizes" value="<%= size %>" <%= product.sizesAvailable.includes(size) ? "checked" : "" %>>
+                <%= size %>
+            </label><br>
+        <% }) %> <br>
 
-                <label for="price">Price:</label>
-                <input type="number" name="price" step="0.01" value="<%= product.price %>" required>
+        <label for="price">Price:</label>
+        <input type="number" name="price" step="0.01" value="<%= product.price %>" required><br><br>
 
-                <label for="stock">Stock:</label>
-                <input type="number" name="stock" value="<%= product.stock %>" required>
+        <label for="stock">Stock:</label>
+        <input type="number" name="stock" value="<%= product.stock %>" required><br><br>
 
-                <button type="submit">Modify Product</button>
-            </form>
+        <button type="submit">Modify Product</button>
+    </form>
 </body>
 
 </html>

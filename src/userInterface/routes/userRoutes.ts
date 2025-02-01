@@ -21,7 +21,13 @@ router.post('/login', async (req, res) => {
     const response = await userService.logIn(email, password, role);
 
     if (response.success) {
-        res.redirect('/users'); 
+        if (role == "user") {
+            res.redirect('/users');
+        }
+        if (role == "admin") {
+            res.redirect('/admin');
+        }
+
     } else {
         res.render('userViews/login', { title: 'Login', error: response.message });
     }
@@ -48,7 +54,7 @@ router.post('/register', async (req, res) => {
 
 // GET /users/logout – Obsługa wylogowania
 router.get('/logout', (req, res) => {
-    res.render('../views/layouts/home', { title: 'Home Page' });
+    res.redirect('/');
 });
 
 export { router as userRoutes };

@@ -28,7 +28,6 @@ export class AdminRepoInfr {
     async addNewProduct(category: string, name: string, descr: string, sizes: string[],
         price: number, stock: number) {
         const newProduct: Product = {
-            id: new ObjectId(),
             category: category,
             name: name,
             description: descr,
@@ -42,14 +41,14 @@ export class AdminRepoInfr {
 
     async removeProduct(productId: ObjectId) {
         const results = await this.cartItemRepository.deleteMany({ product: productId });
-        const result = await this.productRepository.delete({ id: productId });
+        const result = await this.productRepository.delete({ _id: productId });
         return result;
     }
 
     async modifyProduct(productId: ObjectId, category: string, name: string, description: string,
         sizesAvailable: string[], price: number, stock: number) {
         const productUpdates = { category, name, description, sizesAvailable, price, stock };
-        const result = await this.productRepository.update({ id: productId }, productUpdates);
+        const result = await this.productRepository.update({ _id: productId }, productUpdates);
         return result;
     }
 
@@ -63,5 +62,9 @@ export class AdminRepoInfr {
 
     async getAllOrders() {
         return await this.orderRepository.find();
+    }
+
+    async getAllProducts() {
+        return await this.productRepository.find();
     }
 }

@@ -60,7 +60,7 @@ export class OrderRepoInfr {
             });
 
             const newStock = product!.stock - item.quantity;
-            await this.productRepository.update({ id: item.product }, { stock: newStock });
+            await this.productRepository.update({ _id: item.product }, { stock: newStock });
         }
 
         await this.orderItemRepository.save(orderItems);
