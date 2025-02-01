@@ -19,7 +19,7 @@ export class ProductRepoInfr {
 
     async showProductInfo(productId: ObjectId) {
         return await this.productRepository.findOne({
-            where: { id: productId }
+            where: { _id: productId }
         });
     }
 
@@ -46,7 +46,7 @@ export class ProductRepoInfr {
     async filterBySize(...sizes: string[]) {
         return await this.productRepository.find({
             where: {
-                size: { $in: sizes }
+                sizesAvailable: { $in: sizes }
             }
         });
     }

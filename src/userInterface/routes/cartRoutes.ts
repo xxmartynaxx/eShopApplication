@@ -26,7 +26,7 @@ router.post('/changeQuantity', async (req, res) => {
     const result = await cartService.changeQuantity(new ObjectId(cartItemId), parseInt(quantity));
 
     if (result.success) {
-        res.render(`/cart/${req.body.cartId}`); // Przekierowanie do widoku koszyka
+        res.redirect(`/cart/getAll`, /*something*/); // Przekierowanie do widoku koszyka
     } else {
         res.render(`/cart/${req.body.cartId}`, { title: 'Cart Items', message: result.message });
     }

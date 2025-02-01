@@ -28,7 +28,7 @@ export class OrderRepoInfr {
     async createOrder(cartId: ObjectId) {
 
         const cart = await this.cartRepository.findOne({
-            where: { id: cartId }
+            where: { _id: cartId }
         });
 
         const cartItems = await this.cartItemRepository.find({

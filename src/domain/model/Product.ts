@@ -15,7 +15,7 @@ export class Product {
     @Column()
     description!: string;
 
-    @Column(type => String)
+    @Column()
     sizesAvailable!: string[];
 
     @Column()

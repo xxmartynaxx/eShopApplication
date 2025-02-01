@@ -7,8 +7,10 @@ import { Cart } from "../../domain/model/Cart.js";
 
 export async function insertData() {
     
-    await Database.initialize(); 
-    console.log("Database has been initialized!");
+    if (!Database.isInitialized) {
+        await Database.initialize(); 
+        console.log("Database has been initialized!");
+    }
 
     const userRepository = Database.getMongoRepository(User);
     const productRepository = Database.getMongoRepository(Product);
@@ -33,7 +35,7 @@ export async function insertData() {
             stock: 5
         },
         {
-            category: "outwear",
+            category: "outerwear",
             name: "Adidas sweatshirt",
             description: "some sweatshirt's description",
             sizesAvailable: ["m", "l"],

@@ -54,45 +54,45 @@
         <!-- Form for product search -->
         <form method="GET" action="/products/search">
             <input type="text" name="productName" placeholder="Search for a product" required>
-            <button type="submit">Search</button>
+            <button type="submit">Search</button><br>
         </form>
 
         <!-- Price Filter -->
         <form method="GET" action="/products/filterByPrice">
-            <label for="minPrice">Min Price:</label>
+            <br><label for="minPrice">Min Price:</label>
             <input type="number" id="minPrice" name="minPrice" placeholder="Min Price">
             <label for="maxPrice">Max Price:</label>
             <input type="number" id="maxPrice" name="maxPrice" placeholder="Max Price">
-            <button type="submit">Filter by Price</button>
+            <button type="submit">Filter by Price</button><br>
         </form>
 
         <!-- Category Filter -->
         <form method="GET" action="/products/filterByCategory">
-            <label for="category">Category:</label>
+            <br><label for="category">Category:</label><br>
             <% categories.forEach(category=> { %>
                 <label>
                     <input type="radio" name="category" value="<%= category %>">
                     <%= category %>
                 </label><br>
                 <% }) %>
-                    <button type="submit">Filter by Category</button>
+                    <button type="submit">Filter by Category</button><br>
         </form>
 
         <!-- Size Filter (Checkboxes) -->
         <form method="GET" action="/products/filterBySize">
-            <label for="size">Size:</label>
+            <br><label for="size">Size:</label><br>
             <% sizes.forEach(size=> { %>
                 <label>
                     <input type="checkbox" name="size" value="<%= size %>">
                     <%= size %>
                 </label><br>
                 <% }) %>
-                    <button type="submit">Filter by Size</button>
+                    <button type="submit">Filter by Size</button><br>
         </form>
 
         <!-- Sort by Price -->
         <form method="GET" action="/products/sortByPrice">
-            <label for="sortOrder">Sort by Price:</label>
+            <br><label for="sortOrder">Sort by Price:</label>
             <select id="sortOrder" name="sortOrder">
                 <option value="ASC">Low to High</option>
                 <option value="DESC">High to Low</option>
@@ -107,14 +107,20 @@
             <% products.forEach(product=> { %>
                 <li class="product-item">
                     <h3>
-                        <%= product.name %>
+                        <a href="/products/<%= product.id %>">
+                          <%= product.name %>
+                        </a>
                     </h3>
-                    <p>Price: $<%= product.price %>
+
+                    <p>Price: $<%= product.price %></p>
+
+                    <p>Available sizes: 
+                        <%= product.sizesAvailable.join(", ") %>
                     </p>
-                    <p>Category: <%= product.category %>
-                    </p>
-                    <p>Description: <%= product.description %>
-                    </p>
+                    
+                    <p>Category: <%= product.category %></p>
+
+                    <p>Description: <%= product.description %></p>
 
                     <!-- Add to Cart Form -->
                     <form action="/cart/addItem" method="POST">

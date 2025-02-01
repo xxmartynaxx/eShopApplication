@@ -31,13 +31,13 @@ app.get('/home', (req, res) => {
 // Uruchomienie serwera
 (async function main() {
     try {
-        console.log("\nInicjalizacja bazy danych...");
-        await Database.initialize();
-        console.log("\nBaza danych zainicjalizowana.");
-
         // Opcjonalne: wstawienie danych testowych do bazy
         // await insertData();
         // console.log("Dane testowe zostały wstawione.");
+        
+        console.log("\nInicjalizacja bazy danych...");
+        await Database.initialize();
+        console.log("\nBaza danych zainicjalizowana.");
 
         // Start serwera
         app.listen(PORT, () => {
