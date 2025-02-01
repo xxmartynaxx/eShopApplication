@@ -1,15 +1,16 @@
 import { insertData } from "./infrastructure/database/insertData.js";
 import { Database } from "./infrastructure/database/databaseConnection.js";
 import express from "express";
-import routes from "./userInterface/routes";
-// import cookieParser from "cookie-parser";
+import path from 'path';
+import routes from "./userInterface/routes/index.js";
+import cookieParser from "cookie-parser";
 
 
 const app = express();
 const PORT = 3000;
 
 // Middleware do obsługi ciasteczek
-// app.use(cookieParser());
+app.use(cookieParser());
 
 // Middleware do obsługi danych formularzy
 app.use(express.urlencoded({ extended: true }));
@@ -17,7 +18,7 @@ app.use(express.json());
 
 // Ustawienie EJS jako silnika widoków
 app.set('view engine', 'ejs');
-app.set('views', './userInterface/views');
+app.set('views', path.join(process.cwd(), 'src', 'userInterface', 'views'));
 
 // Ładowanie tras 
 app.use('/', routes);
