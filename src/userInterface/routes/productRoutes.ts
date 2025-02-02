@@ -22,12 +22,19 @@ router.get('/', async (req, res) => {
             userIsLoggedIn: userIsLoggedIn
         });
     } else {
-        res.render('productViews/productDetail', { title: 'Products', message: result.message, product: null, userIsLoggedIn: userIsLoggedIn });
+        res.render('productViews/getAll', { 
+            title: 'Products', 
+            products: [], 
+            categories: availableCategories,
+            sizes: availableSizes,
+            userIsLoggedIn: userIsLoggedIn, 
+            message: result.message});
     }
 });
 
 // GET /products/filterByPrice - Renderowanie strony z produktami (filtrowanie po cenie)
 router.get('/filterByPrice', async (req, res) => {
+    const userIsLoggedIn = !!req.cookies.userSession;
     const { minPrice, maxPrice } = req.query;
     
     // Pobranie wartości skrajnych jeśli użytkownik ich nie podał
@@ -40,15 +47,23 @@ router.get('/filterByPrice', async (req, res) => {
             title: 'Product List',
             products: result.data || [],
             categories: availableCategories,
-            sizes: availableSizes
+            sizes: availableSizes,
+            userIsLoggedIn: userIsLoggedIn
         });
     } else {
-        res.render('productViews/productDetail', { title: 'Product List', message: result.message, product: null });
+        res.render('productViews/getAll', { 
+            title: 'Products', 
+            products: [], 
+            categories: availableCategories,
+            sizes: availableSizes,
+            userIsLoggedIn: userIsLoggedIn, 
+            message: result.message});
     }
 });
 
 // GET /products/filterByCategory - Renderowanie strony z produktami (filtrowanie po kategorii)
 router.get('/filterByCategory', async (req, res) => {
+    const userIsLoggedIn = !!req.cookies.userSession;
     const { category } = req.query;
 
     // Sprawdź, czy w ogóle ktoś zaznaczył kategorię
@@ -65,15 +80,23 @@ router.get('/filterByCategory', async (req, res) => {
             title: 'Product List',
             products: result.data || [],
             categories: availableCategories,
-            sizes: availableSizes
+            sizes: availableSizes,
+            userIsLoggedIn: userIsLoggedIn
         });
     } else {
-        res.render('productViews/productDetail', { title: 'Product List', message: result.message, product: null });
+        res.render('productViews/getAll', { 
+            title: 'Products', 
+            products: [], 
+            categories: availableCategories,
+            sizes: availableSizes,
+            userIsLoggedIn: userIsLoggedIn, 
+            message: result.message});
     }
 });
 
 // GET /products/filterBySize - Renderowanie strony z produktami (filtrowanie po rozmiarze)
 router.get('/filterBySize', async (req, res) => {
+    const userIsLoggedIn = !!req.cookies.userSession;
     const sizes = req.query.size; 
 
     if (!sizes) {
@@ -92,20 +115,15 @@ router.get('/filterBySize', async (req, res) => {
             title: 'Product List',
             products: result.data || [],
             categories: availableCategories,
-            sizes: availableSizes
-        });
-    } else {
-        res.render('productViews/getAll', {
-            title: 'Product List',
-            products: [],
-            categories: availableCategories,
-            sizes: availableSizes
+            sizes: availableSizes,
+            userIsLoggedIn: userIsLoggedIn
         });
     }
 });
 
 // GET /products/sortByPrice - Renderowanie strony z produktami (sortowanie po cenie)
 router.get('/sortByPrice', async (req, res) => {
+    const userIsLoggedIn = !!req.cookies.userSession;
     const { sortOrder } = req.query;
     const order = sortOrder!.toString();
     const result = await productService.sortProductsByPrice(order);
@@ -115,12 +133,35 @@ router.get('/sortByPrice', async (req, res) => {
             title: 'Product List',
             products: result.data || [],
             categories: availableCategories,
-            sizes: availableSizes
+            sizes: availableSizes,
+            userIsLoggedIn: userIsLoggedIn
         });
     } else {
-        res.render('productViews/productDetail', { title: 'Product List', message: result.message, product: null });
+        res.render('productViews/getAll', {
+            title: 'Product List',
+            products: result.data || [],
+            categories: availableCategories,
+            sizes: availableSizes,
+            userIsLoggedIn: userIsLoggedIn
+        });
     }
 
+});
+
+// GET /products/search - Wyszukiwanie produktu po nazwie
+router.get('/search', async (req, res) => {
+
+    const productName = req.query.productName!.toString();
+    const result = await productService.getProductByName(productName);
+
+    if (result.success) {
+        res.render('productViews/productDetail', {
+            title: 'Product Found',
+            product: result.data
+        });
+    } else {
+        res.render('productViews/productDetail', { title: 'Product Found', message: result.message, product: null });
+    }
 });
 
 // GET /products/:productId - Renderowanie szczegółów jednego produktu
@@ -133,18 +174,6 @@ router.get('/:productId', async (req, res) => {
         res.render('productViews/productDetail', { title: 'Product Detail', product: result.data });
     } else {
         res.render('productViews/productDetail', { title: 'Product Detail', message: result.message, product: null });
-    }
-});
-
-// GET /products/search - Wyszukiwanie produktu po nazwie
-router.get('/search', async (req, res) => {
-    const productName = req.query.productName!.toString();
-    const result = await productService.getProductByName(productName);
-
-    if (result.success) {
-        res.render('productViews/productSearch', { title: 'Search Results', products: result.data });
-    } else {
-        res.render('productViews/productSearch', { title: 'Search Results', message: result.message, products: null });
     }
 });
 
