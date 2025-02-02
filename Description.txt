@@ -69,6 +69,12 @@ TO DO LIST:
         * po zalogowaniu --||-- + przycisk dodania do koszyka
 
 - naprawa szukania produktów w productViews/getAll a productRoutes -> to są bazodanowe rzeczy i nie chcę się w to zagłębiać XD
+- ogarnięcie do końca koszyków i rzeczy związanych z tworzeniem zamówień:
+
+--> po zalogowaniu, w req.cookies.userSession jest id użytkownika, którego można używać tak: 
+        let response = await userService.getUserRole(req.cookies.userSession)
+        if (response.success && response.role === '[ROLA_KTÓREJ_POTRZEBUJESZ]') {...}
+    ale chyba do koszyków itd wystarczy samo id uzytkownika, no to ono wlasnie jest w req.cookies.userSession
 
 
 -- Idea Projektu --

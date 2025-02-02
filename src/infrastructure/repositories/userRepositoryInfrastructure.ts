@@ -31,12 +31,18 @@ export class UserRepoInfr {
 
     async createNewUserAccount(email: string, password: string) {
         const newUser = {
-            id: new ObjectId(),
             email: email,
             password: password,
             role: "user"
         };
 
         return await this.userRepository.save(newUser);
+    }
+
+    async fetchUserRoleById(userId: ObjectId) {
+        const user = await this.userRepository.findOne({
+            where: { _id: userId }
+        });
+        return user ? user.role : null;
     }
 }

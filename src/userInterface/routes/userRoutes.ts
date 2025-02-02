@@ -5,8 +5,17 @@ const router = Router();
 const userService = new UserService(); 
 
 // GET /users – Renderowanie strony głównej użytkownika
-router.get('/', (req, res) => {
-    res.render('layouts/user', { title: 'User Home' });
+router.get('/', async (req, res) => {
+    let response = await userService.getUserRole(req.cookies.userSession)
+    if (response.success && response.role === 'user') {
+        res.render('layouts/user', { title: 'User Home' });
+    }
+    else if (response.success) {
+        res.render('userViews/login', { title: 'Login', error: "Access denied. Please log in with an appropriate account." })
+    }
+    else {
+        res.render('userViews/login', { title: 'Login', error: response.message })
+    }
 });
 
 
@@ -19,8 +28,17 @@ router.get('/login', (req, res) => {
 router.post('/login', async (req, res) => {
     const { email, password, role } = req.body; // Pobieramy dane z formularza
     const response = await userService.logIn(email, password, role);
+    
+    if (response.success && response.data && response.data._id) {
 
-    if (response.success) {
+        const userId = response.data._id.toString();
+        res.cookie('userSession', userId, {
+            httpOnly: true,
+            secure: false,
+            maxAge: 24 * 60 * 60 * 1000, // 24h
+            sameSite: 'lax' // Działa w ramach tej samej domeny
+        });
+
         if (role == "user") {
             res.redirect('/users');
         }
@@ -54,6 +72,7 @@ router.post('/register', async (req, res) => {
 
 // GET /users/logout – Obsługa wylogowania
 router.get('/logout', (req, res) => {
+    res.clearCookie('userSession')
     res.redirect('/');
 });
 

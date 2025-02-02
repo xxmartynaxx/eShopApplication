@@ -1,5 +1,6 @@
 import { UserRepoInfr } from "../infrastructure/repositories/userRepositoryInfrastructure.js";
 import Validator from "../commonComponent/validator.js";
+import { ObjectId } from "mongodb";
 
 export class UserService {
 
@@ -58,6 +59,26 @@ export class UserService {
         catch (error) {
             console.error("Error creating new account:", error);
             return { success: false, message: "Failed to create new account" };
+        }
+    }
+
+    async getUserRole(userId: string) {
+        try {
+            if (!ObjectId.isValid(userId)) {
+                return { success: false, message: "Please log in first" };
+            }
+
+            const role = await this.userRepository.fetchUserRoleById(new ObjectId(userId));
+
+            if (!role) {
+                return { success: false, message: "User not found" };
+            }
+
+            return { success: true, role: role };
+
+        } catch (error) {
+            console.error("Error retrieving user role:", error);
+            return { success: false, message: "Database query failed" };
         }
     }
 }

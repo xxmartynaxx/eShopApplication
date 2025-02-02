@@ -2,21 +2,35 @@
 import { Router } from "express";
 import { CartService } from "../../application/cartService.js";
 import { OrderService } from "../../application/orderService.js";
+import { UserService } from "../../application/userService.js";
 import { ObjectId } from "mongodb";
 
 const router = Router();
 const cartService = new CartService();
 const orderService = new OrderService();
+const userService = new UserService();
 
 // POST /cart/addItem – Obsługa formularza dodania produktu do koszyka
 router.post('/addItem', async (req, res) => {
-    const { productId, cartId, quantity } = req.body;
-    const result = await cartService.addProductToCart(new ObjectId(productId), new ObjectId(cartId), quantity);
+    let response = await userService.getUserRole(req.cookies.userSession)
+    if (response.success && response.role === 'user') {
 
-    if (result.success) {
-        res.redirect('/products');
-    } else {
-        res.status(400).send(result.message);
+        // DODAĆ ŚCIĄGANIE Z req.cookies.userSession ID UŻYTKOWNIKA -> ODPOWIEDNI KOSZYK
+
+        const { productId, cartId, quantity } = req.body;
+        const result = await cartService.addProductToCart(new ObjectId(productId), new ObjectId(cartId), quantity);
+
+        if (result.success) {
+            res.redirect('/products');
+        } else {
+            res.status(400).send(result.message);
+        }
+    }
+    else if (response.success) {
+        res.render('userViews/login', { title: 'Login', error: "Access denied. Please log in with an appropriate account." })
+    }
+    else {
+        res.render('userViews/login', { title: 'Login', error: response.message })
     }
 });
 
@@ -61,10 +75,10 @@ router.post('/createOrder', async (req, res) => {
 
 // GET /cart/getAll – Renderowanie koszyka użytkownika lub stworzenie nowego
 router.get('/getAll', async (req, res) => {
-    const userId = req.body; 
+    let userId = req.cookies.userSession 
 
     if (!userId) {
-        return res.redirect('/users/login'); 
+        res.render('userViews/login', { title: 'Login', error: "Please log in first." });
     }
 
     let cartResponse = await cartService.getCart(userId);
@@ -80,14 +94,14 @@ router.get('/getAll', async (req, res) => {
         const itemsResponse = await cartService.showAllCartItems(cartId);
         const summaryResponse = await cartService.cartSummary(cartId);
 
-        return res.render('cartView', {
+        return res.render('cartViews/getAll', {
             title: 'Cart Items',
             items: itemsResponse.data || [],
             totalCost: summaryResponse.data?.totalCost || 0,
             numOfItems: summaryResponse.data?.numOfCartItems || 0,
         });
     } else {
-        res.render('layouts/user', { title: 'Error', message: cartResponse.message });
+        res.render('layouts/user', { title: 'Error' });
     }
 });
 
