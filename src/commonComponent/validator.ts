@@ -16,10 +16,8 @@ class Validator {
         return this.arrayOfCategories.includes(arg);
     }
 
-    static isSizeRight(arg: string[]): boolean {
-        for (let size of arg) {
-            if (!this.arrayOfSizes.includes(size)) return false;
-        }
+    static isSizeRight(arg: string): boolean {
+        if (!this.arrayOfSizes.includes(arg)) return false;
         return true;
     }
 
@@ -35,14 +33,14 @@ class Validator {
         category: string, 
         name: string, 
         descr: string, 
-        sizes: string[], 
+        size: string, 
         price: number, 
         stock: number
     ): boolean {
         return this.isCategoryRight(category) &&
                this.isString(name) &&
                this.isString(descr) &&
-               this.isSizeRight(sizes) &&
+               this.isSizeRight(size) &&
                this.isPositiveNumber(price) &&
                this.numberRange(stock, 1, 99);
     }

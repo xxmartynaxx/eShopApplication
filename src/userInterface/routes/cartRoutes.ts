@@ -126,6 +126,7 @@ router.get('/getAll', async (req, res) => {
             return {
                 _id: item.id,
                 name: productInfo.data?.name,
+                size: productInfo.data?.size,
                 quantity: item.quantity,
                 price: productInfo.data?.price
             };
@@ -133,7 +134,7 @@ router.get('/getAll', async (req, res) => {
     }
 
     else {
-        var mappedItems: { _id: ObjectId; name: string | undefined; quantity: number; price: number | undefined; }[] = [];
+        var mappedItems: { _id: ObjectId; name: string | undefined; size: string | undefined; quantity: number; price: number | undefined; }[] = [];
     }
 
     const summaryResponse = await cartService.cartSummary(cartId);

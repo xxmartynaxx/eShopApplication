@@ -45,12 +45,11 @@ router.get('/addProduct', async (req, res) => {
 router.post('/addProduct', async (req, res) => {
     let response_1 = await userService.getUserRole(req.cookies.userSession)
     if (response_1.success && response_1.role === 'admin') {
-        const { category, name, descr } = req.body;
-        const sizes = Array.isArray(req.body.sizes) ? req.body.sizes : (req.body.sizes ? [req.body.sizes] : []);
+        const { size, category, name, descr } = req.body;
         const price = parseFloat(req.body.price);
         const stock = parseInt(req.body.stock, 10);
 
-        const response = await adminService.addNewProduct(category, name, descr, sizes, price, stock);
+        const response = await adminService.addNewProduct(category, name, descr, size, price, stock);
 
         if (response.success) {
             res.redirect('/admin');
@@ -165,14 +164,13 @@ router.get('/modifyProduct/:productId', async (req, res) => {
 router.post('/modifyProduct', async (req, res) => {
     let response_1 = await userService.getUserRole(req.cookies.userSession)
     if (response_1.success && response_1.role === 'admin') {
-        const { productId, category, name, descr } = req.body;
-        const sizes = Array.isArray(req.body.sizes) ? req.body.sizes : (req.body.sizes ? [req.body.sizes] : []);
+        const { productId, category, size, name, descr } = req.body;
         const price = parseFloat(req.body.price);
         const stock = parseInt(req.body.stock, 10);
         
         console.log(productId)
 
-        const response = await adminService.modifyProduct(new ObjectId(productId), category, name, descr, sizes, price, stock);
+        const response = await adminService.modifyProduct(new ObjectId(productId), category, name, descr, size, price, stock);
 
         if (response.success) {
             res.redirect('/admin');
@@ -180,7 +178,7 @@ router.post('/modifyProduct', async (req, res) => {
             res.render('adminViews/modifyProduct', {
                 title: 'Modify a Product', availableCategories, availableSizes,
                 error: response.message,
-                product: { _id: productId, category, name, description: descr, sizesAvailable: sizes, price, stock }
+                product: { _id: productId, category, name, description: descr, sizesAvailable: size, price, stock }
             });
         }
     }

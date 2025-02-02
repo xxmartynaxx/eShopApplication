@@ -32,8 +32,8 @@ app.get('/home', (req, res) => {
 (async function main() {
     try {
         // Opcjonalne: wstawienie danych testowych do bazy
-        // await insertData();
-        // console.log("Dane testowe zostały wstawione.");
+        await insertData();
+        console.log("\nDane testowe zostały wstawione.");
         
         console.log("\nInicjalizacja bazy danych...");
         await Database.initialize();
@@ -41,7 +41,7 @@ app.get('/home', (req, res) => {
 
         // Start serwera
         app.listen(PORT, () => {
-            console.log(`Serwer działa na http://localhost:${PORT}`);
+            console.log(`\nSerwer działa na http://localhost:${PORT}`);
         });
 
         // Wywołanie po zamknięciu (opcjonalne)

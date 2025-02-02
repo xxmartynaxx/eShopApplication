@@ -10,14 +10,14 @@ export class AdminService {
         this.adminRepository = new AdminRepoInfr();
     }
 
-    async addNewProduct(category: string, name: string, descr: string, sizes: string[],
+    async addNewProduct(category: string, name: string, descr: string, size: string,
         price: number, stock: number) {
         try {
-            if (!Validator.isValidProduct(category, name, descr, sizes, price, stock)) {
+            if (!Validator.isValidProduct(category, name, descr, size, price, stock)) {
                 return { success: false, message: "Invalid product data" };
             }
 
-            const product = await this.adminRepository.addNewProduct(category, name, descr, sizes, price, stock);
+            const product = await this.adminRepository.addNewProduct(category, name, descr, size, price, stock);
 
             return product
                 ? { success: true, data: product }
@@ -50,17 +50,17 @@ export class AdminService {
     }
 
     async modifyProduct(productId: ObjectId, category: string, name: string, descr: string,
-        sizes: string[], price: number, stock: number) {
+        size: string, price: number, stock: number) {
         try {
             if (Validator.isEmpty(productId.toString())) {
                 return { success: false, message: "Invalid product ID provided" };
             }
 
-            if (!Validator.isValidProduct(category, name, descr, sizes, price, stock)) {
+            if (!Validator.isValidProduct(category, name, descr, size, price, stock)) {
                 return { success: false, message: "Invalid product data" };
             }
 
-            const result = await this.adminRepository.modifyProduct(productId, category, name, descr, sizes, price, stock);
+            const result = await this.adminRepository.modifyProduct(productId, category, name, descr, size, price, stock);
 
             return result.affected
                 ? { success: true, message: "Product updated successfully" }

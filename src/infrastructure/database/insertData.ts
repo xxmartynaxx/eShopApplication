@@ -30,7 +30,7 @@ export async function insertData() {
             category: "tops",
             name: "H&M summer top",
             description: "some top's description",
-            sizesAvailable: ["xs", "l"],
+            size: "xs",
             price: 12.5,
             stock: 5
         },
@@ -38,7 +38,7 @@ export async function insertData() {
             category: "outerwear",
             name: "Adidas sweatshirt",
             description: "some sweatshirt's description",
-            sizesAvailable: ["m", "l"],
+            size: "l",
             price: 120,
             stock: 8
         }

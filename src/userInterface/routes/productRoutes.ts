@@ -97,20 +97,17 @@ router.get('/filterByCategory', async (req, res) => {
 // GET /products/filterBySize - Renderowanie strony z produktami (filtrowanie po rozmiarze)
 router.get('/filterBySize', async (req, res) => {
     const userIsLoggedIn = !!req.cookies.userSession;
-    const sizes = req.query.size; 
+    const { size } = req.query; 
 
-    if (!sizes) {
+    if (!size) {
         // np. nic nie robimy, tylko wyświetlamy z powrotem pełną listę 
         return res.redirect('/products');
     }
 
-    if (sizes) {
-        // Upewniamy się, że każda wartość w tablicy jest stringiem
-        let sizesArray: string[] = Array.isArray(sizes) 
-            ? sizes.map(size => String(size)) 
-            : [String(sizes)];
-        const result = await productService.filterBySize(...sizesArray);
-        
+    const sizeString = size!.toString();
+    const result = await productService.filterBySize(sizeString);
+
+    if (result.success) {
         res.render('productViews/getAll', {
             title: 'Product List',
             products: result.data || [],
@@ -118,6 +115,14 @@ router.get('/filterBySize', async (req, res) => {
             sizes: availableSizes,
             userIsLoggedIn: userIsLoggedIn
         });
+    } else {
+        res.render('productViews/getAll', { 
+            title: 'Products', 
+            products: [], 
+            categories: availableCategories,
+            sizes: availableSizes,
+            userIsLoggedIn: userIsLoggedIn, 
+            message: result.message});
     }
 });
 

@@ -117,6 +117,7 @@
                     <th>Product</th>
                     <th>Quantity</th>
                     <th>Price</th>
+                    <th>Size</th>
                     <th>Actions</th>
                 </tr>
             </thead>
@@ -137,6 +138,9 @@
                             </td>
                             <td>
                                 <%= item.price * item.quantity %> USD
+                            </td>
+                            <td>
+                                <%= item.size %> 
                             </td>
                             <td>
                                 <form action="/cart/removeItem" method="POST" class="actions">

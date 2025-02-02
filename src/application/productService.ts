@@ -25,7 +25,6 @@ export class ProductService {
         }
     }
 
-    // after clicking on the specific product
     async showProductInfo(productId: ObjectId) {
         try {
             if (Validator.isEmpty(productId.toString())) {
@@ -45,7 +44,6 @@ export class ProductService {
         }
     }
 
-    // search box
     async getProductByName(productName: string) {
         try {
             if (!Validator.isString(productName)) {
@@ -65,7 +63,6 @@ export class ProductService {
         }
     }
 
-    // type boxes
     async filterByPrice(minPrice: number, maxPrice: number) {
         try {
             if (!Validator.isPositiveNumber(minPrice) || !Validator.isPositiveNumber(maxPrice) ||
@@ -86,7 +83,6 @@ export class ProductService {
         }
     }
 
-    // List like the one in the Express Ex2 (radio)
     async filterByCategory(category: string) {
         try {
             if (!Validator.isCategoryRight(category)) {
@@ -106,18 +102,17 @@ export class ProductService {
         }
     }
 
-    // List like the one in the Express Ex2 (checkboxes)
-    async filterBySize(...sizes: string[]) {
+    async filterBySize(size: string) {
         try {
-            if (!Validator.isSizeRight(sizes)) {
-                return { success: false, message: "Invalid sizes provided" };
+            if (!Validator.isSizeRight(size)) {
+                return { success: false, message: "Invalid size provided" };
             }
 
-            const products = await this.productRepository.filterBySize(...sizes);
+            const products = await this.productRepository.filterBySize(size);
 
             return products.length
                 ? { success: true, data: products }
-                : { success: false, message: "No products found in the specified sizes" };
+                : { success: false, message: "No products found in the specified size" };
         }
 
         catch (error) {
@@ -126,7 +121,6 @@ export class ProductService {
         }
     }
 
-    // List like the one in the Express Ex2 (radio)
     async sortProductsByPrice(sortingOrder: string) {
         try {
             if (!["ASC", "DESC"].includes(sortingOrder)) {

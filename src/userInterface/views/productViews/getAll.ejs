@@ -83,12 +83,12 @@
                     <button type="submit">Filter by Category</button><br>
         </form>
 
-        <!-- Size Filter (Checkboxes) -->
+        <!-- Size Filter -->
         <form method="GET" action="/products/filterBySize">
             <br><label for="size">Size:</label><br>
             <% sizes.forEach(size=> { %>
                 <label>
-                    <input type="checkbox" name="size" value="<%= size %>">
+                    <input type="radio" name="size" value="<%= size %>">
                     <%= size %>
                 </label><br>
                 <% }) %>
@@ -119,9 +119,7 @@
 
                     <p>Price: $<%= product.price %></p>
 
-                    <p>Available sizes: 
-                        <%= product.sizesAvailable.join(", ") %>
-                    </p>
+                    <p>Size: <%= product.size %></p>
                     
                     <p>Category: <%= product.category %></p>
 

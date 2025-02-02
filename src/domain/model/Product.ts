@@ -16,7 +16,7 @@ export class Product {
     description!: string;
 
     @Column()
-    sizesAvailable!: string[];
+    size!: string;
 
     @Column()
     price!: number;

@@ -39,7 +39,7 @@
         <label>Sizes:</label><br>
         <% availableSizes.forEach(size => { %>
             <label>
-                <input type="checkbox" name="sizes" value="<%= size %>">
+                <input type="radio" name="sizes" value="<%= size %>" required>
                 <%= size %>
             </label><br>
         <% }) %> <br>

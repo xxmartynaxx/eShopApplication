@@ -43,11 +43,9 @@ export class ProductRepoInfr {
         });
     }
 
-    async filterBySize(...sizes: string[]) {
+    async filterBySize(size: string) {
         return await this.productRepository.find({
-            where: {
-                sizesAvailable: { $in: sizes }
-            }
+            where: { size }
         });
     }
 

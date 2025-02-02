@@ -25,13 +25,13 @@ export class AdminRepoInfr {
         })();
     }
 
-    async addNewProduct(category: string, name: string, descr: string, sizes: string[],
+    async addNewProduct(category: string, name: string, descr: string, size: string,
         price: number, stock: number) {
         const newProduct: Product = {
             category: category,
             name: name,
             description: descr,
-            sizesAvailable: sizes,
+            size: size,
             price: price,
             stock: stock
         }
@@ -46,8 +46,8 @@ export class AdminRepoInfr {
     }
 
     async modifyProduct(productId: ObjectId, category: string, name: string, description: string,
-        sizesAvailable: string[], price: number, stock: number) {
-        const productUpdates = { category, name, description, sizesAvailable, price, stock };
+        size: string, price: number, stock: number) {
+        const productUpdates = { category, name, description, size, price, stock };
         const result = await this.productRepository.update({ _id: productId }, productUpdates);
         return result;
     }

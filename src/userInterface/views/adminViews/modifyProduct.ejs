@@ -37,11 +37,11 @@
         <label for="descr">Description:</label>
         <textarea name="descr"><%= product.description %></textarea><br><br>
 
-        <!-- Size Selection (Checkboxes) -->
+        <!-- Size Selection (Radio Buttons) -->
         <label>Sizes:</label><br>
         <% availableSizes.forEach(size => { %>
             <label>
-                <input type="checkbox" name="sizes" value="<%= size %>" <%= product.sizesAvailable.includes(size) ? "checked" : "" %>>
+                <input type="radio" name="sizes" value="<%= size %>" <%= product.size === size ? "checked" : "" %> required>
                 <%= size %>
             </label><br>
         <% }) %> <br>
