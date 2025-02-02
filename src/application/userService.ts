@@ -1,13 +1,16 @@
 import { UserRepoInfr } from "../infrastructure/repositories/userRepositoryInfrastructure.js";
 import Validator from "../commonComponent/validator.js";
 import { ObjectId } from "mongodb";
+import { CartRepoInfr } from "../infrastructure/repositories/cartRepositoryInfrastructure.js";
 
 export class UserService {
 
     private userRepository: UserRepoInfr;
+    private cartRepository: CartRepoInfr;
 
     constructor() {
         this.userRepository = new UserRepoInfr();
+        this.cartRepository = new CartRepoInfr();
     }
 
     async logIn(email: string, password: string, role: string) {
@@ -39,11 +42,13 @@ export class UserService {
             const existingUser = await this.userRepository.findUserByEmail(email);
 
             if (existingUser) {
-                // powinna wyświetlić się strona do normalnego zalogowania
                 return { success: false, message: `User with email ${email} already exists` };
             }
 
             const newUser = await this.userRepository.createNewUserAccount(email, password);
+            const newCart = await this.cartRepository.createNewCart(new ObjectId(newUser._id));
+
+            await this.userRepository.modifyUserData(newUser, new ObjectId(newCart.id));
 
             return newUser
                 ? { success: true, data: newUser }

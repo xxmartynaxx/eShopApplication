@@ -39,10 +39,10 @@
         <label>Sizes:</label><br>
         <% availableSizes.forEach(size => { %>
             <label>
-                <input type="radio" name="sizes" value="<%= size %>" required>
+                <input type="radio" name="size" value="<%= size %>" required>
                 <%= size %>
             </label><br>
-        <% }) %> <br>
+        <% }) %><br>
 
         <label for="price">Price:</label>
         <input type="number" name="price" step="0.01" required><br><br>

@@ -8,8 +8,7 @@ import { Cart } from "../../domain/model/Cart.js";
 export async function insertData() {
     
     if (!Database.isInitialized) {
-        await Database.initialize(); 
-        console.log("Database has been initialized!");
+        await Database.initialize();
     }
 
     const userRepository = Database.getMongoRepository(User);
@@ -30,7 +29,7 @@ export async function insertData() {
             category: "tops",
             name: "H&M summer top",
             description: "some top's description",
-            size: "xs",
+            size: "XS",
             price: 12.5,
             stock: 5
         },
@@ -38,7 +37,7 @@ export async function insertData() {
             category: "outerwear",
             name: "Adidas sweatshirt",
             description: "some sweatshirt's description",
-            size: "l",
+            size: "L",
             price: 120,
             stock: 8
         }
@@ -64,6 +63,6 @@ export async function insertData() {
         { $set: { cart: insertedCarts.insertedIds[1] } }
     );
 
-    console.log("Data inserted successfully.");
+    console.log("\nData inserted successfully.");
     await Database.destroy();
 }

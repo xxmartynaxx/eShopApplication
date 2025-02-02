@@ -1,5 +1,5 @@
 class Validator {
-    static arrayOfSizes: string[] = ["xs", "s", "m", "l", "xl"];
+    static arrayOfSizes: string[] = ["XS", "S", "M", "L", "XL"];
     static arrayOfCategories: string[] = ["tops", "bottoms", "dresses", "outerwear", "activewear"];
     static orderStatus: string[] = ["in magazine", "shipped", "delivered", "canceled"];
     static roles: string[] = ["user", "admin"];
@@ -17,7 +17,8 @@ class Validator {
     }
 
     static isSizeRight(arg: string): boolean {
-        if (!this.arrayOfSizes.includes(arg)) return false;
+        let argToUpper = arg.toUpperCase();
+        if (!this.arrayOfSizes.includes(argToUpper)) return false;
         return true;
     }
 

@@ -25,33 +25,33 @@ app.use('/', routes);
 
 // Strona główna
 app.get('/home', (req, res) => {
-    res.render('home', { title: 'Strona Główna' });
+    res.render('home', { title: 'HomePage' });
 });
 
 // Uruchomienie serwera
 (async function main() {
     try {
         // Opcjonalne: wstawienie danych testowych do bazy
-        await insertData();
-        console.log("\nDane testowe zostały wstawione.");
+        // await insertData();
+        // console.log("\nTest data has been inserted.");
         
-        console.log("\nInicjalizacja bazy danych...");
+        console.log("\nInitializing the database...");
         await Database.initialize();
-        console.log("\nBaza danych zainicjalizowana.");
+        console.log("\nDatabase initialized.");
 
         // Start serwera
         app.listen(PORT, () => {
-            console.log(`\nSerwer działa na http://localhost:${PORT}`);
+            console.log(`\nServer is running on http://localhost:${PORT}`);
         });
 
         // Wywołanie po zamknięciu (opcjonalne)
         process.on('SIGINT', async () => {
-            console.log("\nZamykanie połączenia z bazą danych...");
+            console.log("\nClosing database connection...");
             await Database.destroy();
-            console.log("\nPołączenie z bazą danych zamknięte.");
+            console.log("\nDatabase connection closed.");
             process.exit(0);
         });
     } catch (error) {
-        console.error("Błąd podczas inicjalizacji aplikacji:", error);
+        console.error("Error during application initialization:", error);
     }
 })();

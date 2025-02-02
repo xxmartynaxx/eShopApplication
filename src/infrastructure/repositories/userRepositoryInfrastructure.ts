@@ -39,6 +39,12 @@ export class UserRepoInfr {
         return await this.userRepository.save(newUser);
     }
 
+    async modifyUserData(user: User, cartId: ObjectId) {
+        user.cart = cartId;
+        await this.userRepository.save(user);
+    }
+
+
     async fetchUserRoleById(userId: ObjectId) {
         const user = await this.userRepository.findOne({
             where: { _id: userId }

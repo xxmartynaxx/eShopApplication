@@ -178,7 +178,7 @@ router.post('/modifyProduct', async (req, res) => {
             res.render('adminViews/modifyProduct', {
                 title: 'Modify a Product', availableCategories, availableSizes,
                 error: response.message,
-                product: { _id: productId, category, name, description: descr, sizesAvailable: size, price, stock }
+                product: { _id: productId, category, name, description: descr, size: size, price, stock }
             });
         }
     }
