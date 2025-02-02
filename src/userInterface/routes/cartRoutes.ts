@@ -3,10 +3,12 @@ import { Router } from "express";
 import { CartService } from "../../application/cartService.js";
 import { OrderService } from "../../application/orderService.js";
 import { UserService } from "../../application/userService.js";
+import { ProductService } from "../../application/productService.js";
 import { ObjectId } from "mongodb";
 
 const router = Router();
 const cartService = new CartService();
+const productService = new ProductService();
 const orderService = new OrderService();
 const userService = new UserService();
 
@@ -16,9 +18,17 @@ router.post('/addItem', async (req, res) => {
     if (response.success && response.role === 'user') {
 
         // DODAĆ ŚCIĄGANIE Z req.cookies.userSession ID UŻYTKOWNIKA -> ODPOWIEDNI KOSZYK
+        const userId = req.cookies.userSession;
 
-        const { productId, cartId, quantity } = req.body;
-        const result = await cartService.addProductToCart(new ObjectId(productId), new ObjectId(cartId), quantity);
+        let cartResponse = await cartService.getCart(userId);
+        if (!cartResponse.success) {
+            cartResponse = await cartService.createNewCart(userId);
+        }
+
+        const cartId = cartResponse.data!.id;
+        const { productId, quantity } = req.body;
+
+        const result = await cartService.addProductToCart(new ObjectId(productId), new ObjectId(cartId), parseInt(quantity));
 
         if (result.success) {
             res.redirect('/products');
@@ -40,9 +50,9 @@ router.post('/changeQuantity', async (req, res) => {
     const result = await cartService.changeQuantity(new ObjectId(cartItemId), parseInt(quantity));
 
     if (result.success) {
-        res.redirect(`/cart/getAll`, /*something*/); // Przekierowanie do widoku koszyka
+        res.redirect(`/cart/getAll`);
     } else {
-        res.render(`/cart/${req.body.cartId}`, { title: 'Cart Items', message: result.message });
+        res.render(`cartViews/getAll`, { title: 'Cart Items', message: result.message });
     }
 
 });
@@ -53,9 +63,9 @@ router.post('/removeItem', async (req, res) => {
     const result = await cartService.removeProductFromCart(new ObjectId(cartItemId));
 
     if (result.success) {
-        res.redirect(`/cart/${req.body.cartId}`); // Przekierowanie do widoku koszyka
+        res.redirect(`/cart/getAll`); 
     } else {
-        res.render(`/cart/${req.body.cartId}`, { title: 'Cart Items', message: result.message });
+        res.render(`cartViews/getAll`, { title: 'Cart Items', message: result.message });
     }
 
 });
@@ -92,13 +102,25 @@ router.get('/getAll', async (req, res) => {
         const cartId = cartResponse.data!.id;
 
         const itemsResponse = await cartService.showAllCartItems(cartId);
+
+        const mappedItems = await Promise.all(itemsResponse.data!.map(async (item) => {
+            const productInfo = await productService.showProductInfo(new ObjectId(item.product)); 
+            return {
+                _id: item.id,
+                name: productInfo.data?.name,
+                quantity: item.quantity,
+                price: productInfo.data?.price
+            };
+        }));
+
         const summaryResponse = await cartService.cartSummary(cartId);
 
         return res.render('cartViews/getAll', {
             title: 'Cart Items',
-            items: itemsResponse.data || [],
+            mappedItems: mappedItems || [],
+            cartId: cartId,
             totalCost: summaryResponse.data?.totalCost || 0,
-            numOfItems: summaryResponse.data?.numOfCartItems || 0,
+            numOfCartItems: summaryResponse.data?.numOfCartItems || 0,
         });
     } else {
         res.render('layouts/user', { title: 'Error' });

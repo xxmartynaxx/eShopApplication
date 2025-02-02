@@ -49,6 +49,11 @@
 
 <body>
 
+    <% if (userIsLoggedIn) { %>
+        <a href="/cart/getAll">Cart</a>
+        <br><br>
+    <% } %>
+
     <!-- Sorting and Filtering Section -->
     <div>
         <!-- Form for product search -->

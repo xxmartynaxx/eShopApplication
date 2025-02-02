@@ -10,6 +10,7 @@ const availableSizes = Validator.arrayOfSizes;
 
 // GET /products – Renderowanie strony głównej z produktami
 router.get('/', async (req, res) => {
+    const userIsLoggedIn = !!req.cookies.userSession;
     const result = await productService.getAllProducts();
 
     if (result.success) {
@@ -17,10 +18,11 @@ router.get('/', async (req, res) => {
             title: 'Product List',
             products: result.data || [],
             categories: availableCategories,
-            sizes: availableSizes
+            sizes: availableSizes,
+            userIsLoggedIn: userIsLoggedIn
         });
     } else {
-        res.render('productViews/productDetail', { title: 'Products', message: result.message, product: null });
+        res.render('productViews/productDetail', { title: 'Products', message: result.message, product: null, userIsLoggedIn: userIsLoggedIn });
     }
 });
 

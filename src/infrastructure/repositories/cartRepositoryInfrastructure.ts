@@ -54,7 +54,7 @@ export class CartRepoInfr {
 
     async getCartItemById(cartItemId: ObjectId) {
         return await this.cartItemRepository.findOne({
-            where: { id: cartItemId }
+            where: { _id: cartItemId }
         });
     }
 
@@ -75,11 +75,11 @@ export class CartRepoInfr {
 
         const numOfCartItems = cartItems.length;
 
-        let totalCost = 0;
+        var totalCost = 0;
 
         for (let item of cartItems) {
             const product = await this.productRepository.findOne({
-                where: { id: item.product }
+                where: { _id: item.product }
             });
             totalCost = totalCost + (product!.price) * item.quantity;
         }
