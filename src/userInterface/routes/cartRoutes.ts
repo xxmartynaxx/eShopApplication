@@ -4,6 +4,7 @@ import { CartService } from "../../application/cartService.js";
 import { OrderService } from "../../application/orderService.js";
 import { UserService } from "../../application/userService.js";
 import { ProductService } from "../../application/productService.js";
+import Validator from "../../commonComponent/validator.js";
 import { ObjectId } from "mongodb";
 
 const router = Router();
@@ -11,13 +12,14 @@ const cartService = new CartService();
 const productService = new ProductService();
 const orderService = new OrderService();
 const userService = new UserService();
+const availableCategories = Validator.arrayOfCategories;
+const availableSizes = Validator.arrayOfSizes;
 
 // POST /cart/addItem – Obsługa formularza dodania produktu do koszyka
 router.post('/addItem', async (req, res) => {
     let response = await userService.getUserRole(req.cookies.userSession)
     if (response.success && response.role === 'user') {
 
-        // DODAĆ ŚCIĄGANIE Z req.cookies.userSession ID UŻYTKOWNIKA -> ODPOWIEDNI KOSZYK
         const userId = req.cookies.userSession;
 
         let cartResponse = await cartService.getCart(userId);
@@ -63,7 +65,7 @@ router.post('/removeItem', async (req, res) => {
     const result = await cartService.removeProductFromCart(new ObjectId(cartItemId));
 
     if (result.success) {
-        res.redirect(`/cart/getAll`); 
+        res.redirect(`/cart/getAll`);
     } else {
         res.render(`cartViews/getAll`, { title: 'Cart Items', message: result.message });
     }
@@ -72,20 +74,26 @@ router.post('/removeItem', async (req, res) => {
 
 // POST /cart/createOrder - Obsługa formularza złożenia zamówienia
 router.post('/createOrder', async (req, res) => {
+    const userIsLoggedIn = !!req.cookies.userSession;
     const { cartId } = req.body;
     const result = await orderService.createOrder(new ObjectId(cartId));
 
     if (result.success) {
-        res.render('/products'); 
+        res.redirect('/products');
     } else {
-        res.render('/products', { message: result.message });
+        res.render('productViews/getAll', { title: 'Product List',
+            products: result.data || [],
+            categories: availableCategories,
+            sizes: availableSizes,
+            userIsLoggedIn: userIsLoggedIn,
+            message: result.message });
     }
 
 });
 
 // GET /cart/getAll – Renderowanie koszyka użytkownika lub stworzenie nowego
 router.get('/getAll', async (req, res) => {
-    let userId = req.cookies.userSession 
+    let userId = req.cookies.userSession;
 
     if (!userId) {
         res.render('userViews/login', { title: 'Login', error: "Please log in first." });
@@ -95,16 +103,26 @@ router.get('/getAll', async (req, res) => {
 
     // Jeśli koszyk nie istnieje, utwórz nowy
     if (!cartResponse.success) {
-        cartResponse = await cartService.createNewCart(userId);
+        const cartResponse = await cartService.createNewCart(userId);
+        if (!cartResponse.success) {
+            return res.render('cartViews/getAll', {
+                title: 'Cart Items',
+                mappedItems: [],
+                cartId: null,
+                totalCost: 0,
+                numOfCartItems: 0,
+                message: cartResponse.message
+            });
+        }
     }
 
-    if (cartResponse.success) {
-        const cartId = cartResponse.data!.id;
 
-        const itemsResponse = await cartService.showAllCartItems(cartId);
+    const cartId = cartResponse.data!.id;
+    const itemsResponse = await cartService.showAllCartItems(cartId);
 
-        const mappedItems = await Promise.all(itemsResponse.data!.map(async (item) => {
-            const productInfo = await productService.showProductInfo(new ObjectId(item.product)); 
+    if ( itemsResponse.data?.length ) {
+        var mappedItems = await Promise.all(itemsResponse.data!.map(async (item) => {
+            const productInfo = await productService.showProductInfo(new ObjectId(item.product));
             return {
                 _id: item.id,
                 name: productInfo.data?.name,
@@ -112,19 +130,22 @@ router.get('/getAll', async (req, res) => {
                 price: productInfo.data?.price
             };
         }));
-
-        const summaryResponse = await cartService.cartSummary(cartId);
-
-        return res.render('cartViews/getAll', {
-            title: 'Cart Items',
-            mappedItems: mappedItems || [],
-            cartId: cartId,
-            totalCost: summaryResponse.data?.totalCost || 0,
-            numOfCartItems: summaryResponse.data?.numOfCartItems || 0,
-        });
-    } else {
-        res.render('layouts/user', { title: 'Error' });
     }
+
+    else {
+        var mappedItems: { _id: ObjectId; name: string | undefined; quantity: number; price: number | undefined; }[] = [];
+    }
+
+    const summaryResponse = await cartService.cartSummary(cartId);
+
+    return res.render('cartViews/getAll', {
+        title: 'Cart Items',
+        mappedItems: mappedItems,
+        cartId: cartId,
+        totalCost: summaryResponse.data?.totalCost || 0,
+        numOfCartItems: summaryResponse.data?.numOfCartItems || 0,
+    });
+
 });
 
 export { router as cartRoutes };

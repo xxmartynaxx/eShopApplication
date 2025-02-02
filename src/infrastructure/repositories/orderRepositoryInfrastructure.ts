@@ -56,7 +56,7 @@ export class OrderRepoInfr {
         for (let item of cartItems) {
 
             const product = await this.productRepository.findOne({
-                where: { id: item.product }
+                where: { _id: item.product }
             });
 
             const newStock = product!.stock - item.quantity;
