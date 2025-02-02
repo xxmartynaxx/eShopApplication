@@ -167,8 +167,6 @@ router.post('/modifyProduct', async (req, res) => {
         const { productId, category, size, name, descr } = req.body;
         const price = parseFloat(req.body.price);
         const stock = parseInt(req.body.stock, 10);
-        
-        console.log(productId)
 
         const response = await adminService.modifyProduct(new ObjectId(productId), category, name, descr, size, price, stock);
 

@@ -47,8 +47,22 @@ export class AdminRepoInfr {
 
     async modifyProduct(productId: ObjectId, category: string, name: string, description: string,
         size: string, price: number, stock: number) {
+
+        if (stock === 0) {
+            return this.removeProduct(productId);
+        }
+
         const productUpdates = { category, name, description, size, price, stock };
         const result = await this.productRepository.update({ _id: productId }, productUpdates);
+
+        const cartItems = await this.cartItemRepository.find({ product: productId });
+
+        for (var cartItem of cartItems) {
+            if (stock < cartItem.quantity) {
+                await this.cartItemRepository.update({ id: cartItem.id }, { quantity: stock });
+            }
+        }    
+
         return result;
     }
 
