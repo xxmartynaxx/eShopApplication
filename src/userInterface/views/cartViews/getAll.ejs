@@ -136,7 +136,7 @@
                                 </form>
                             </td>
                             <td>
-                                <%= item.price %> USD
+                                <%= item.price * item.quantity %> USD
                             </td>
                             <td>
                                 <form action="/cart/removeItem" method="POST" class="actions">

@@ -20,7 +20,7 @@ export class CartService {
                 return { success: false, message: "Invalid user ID provided" };
             }
 
-            const cart = await this.cartRepository.createNewCart(userId);
+            const cart = await this.cartRepository.createNewCart(new ObjectId(userId));
 
             return cart
                 ? { success: true, data: cart }

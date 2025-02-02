@@ -149,8 +149,6 @@ router.get('/modifyProduct/:productId', async (req, res) => {
 
         const response = await productService.showProductInfo(id);
 
-        console.log(response.data)
-
         res.render('adminViews/modifyProduct', { title: 'Modify a Product', product: response.data, error: null,
             availableCategories, availableSizes
         });

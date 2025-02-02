@@ -10,8 +10,6 @@ export class UserService {
         this.userRepository = new UserRepoInfr();
     }
 
-    // arg przechwytywane z http?
-    // jeśli błędne dane to powinna się wyświetlić opcja do ponownego zalogowania
     async logIn(email: string, password: string, role: string) {
         try {
             if (!Validator.isEmail(email) || !Validator.isLengthRight(password) || 
@@ -31,10 +29,6 @@ export class UserService {
             return { success: false, message: "Failed to log in" };
         }
     } 
-
-    async logOut() { 
-        // będzie wyświetlać stronę główną dla niezalogowanych użytkowników
-    }
             
     async createNewUserAccount(email: string, password: string) {
         try {

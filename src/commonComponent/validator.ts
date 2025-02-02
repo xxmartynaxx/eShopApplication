@@ -53,7 +53,7 @@ class Validator {
     }
 
     static isLengthRight(arg: string): boolean {
-        return this.isString(arg) && arg.length >= 6 && arg.length <= 15;
+        return this.isString(arg) && arg.length >= 6 && arg.length <= 20;
     }
 
     static isRoleRight(arg: string): boolean {

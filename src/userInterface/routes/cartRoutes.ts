@@ -22,9 +22,9 @@ router.post('/addItem', async (req, res) => {
 
         const userId = req.cookies.userSession;
 
-        let cartResponse = await cartService.getCart(userId);
+        let cartResponse = await cartService.getCart(new ObjectId(userId));
         if (!cartResponse.success) {
-            cartResponse = await cartService.createNewCart(userId);
+            cartResponse = await cartService.createNewCart(new ObjectId(userId));
         }
 
         const cartId = cartResponse.data!.id;
@@ -81,7 +81,8 @@ router.post('/createOrder', async (req, res) => {
     if (result.success) {
         res.redirect('/products');
     } else {
-        res.render('productViews/getAll', { title: 'Product List',
+        res.render('productViews/getAll', { 
+            title: 'Product List',
             products: result.data || [],
             categories: availableCategories,
             sizes: availableSizes,
@@ -99,11 +100,11 @@ router.get('/getAll', async (req, res) => {
         res.render('userViews/login', { title: 'Login', error: "Please log in first." });
     }
 
-    let cartResponse = await cartService.getCart(userId);
+    var cartResponse = await cartService.getCart(new ObjectId(userId));
 
     // Jeśli koszyk nie istnieje, utwórz nowy
     if (!cartResponse.success) {
-        const cartResponse = await cartService.createNewCart(userId);
+        cartResponse = await cartService.createNewCart(new ObjectId(userId));
         if (!cartResponse.success) {
             return res.render('cartViews/getAll', {
                 title: 'Cart Items',
@@ -115,7 +116,6 @@ router.get('/getAll', async (req, res) => {
             });
         }
     }
-
 
     const cartId = cartResponse.data!.id;
     const itemsResponse = await cartService.showAllCartItems(cartId);
