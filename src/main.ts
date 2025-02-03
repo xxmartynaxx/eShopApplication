@@ -5,7 +5,6 @@ import path from 'path';
 import routes from "./userInterface/routes/index.js";
 import cookieParser from "cookie-parser";
 
-
 const app = express();
 const PORT = 3000;
 

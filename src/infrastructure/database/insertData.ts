@@ -27,7 +27,7 @@ export async function insertData() {
     const products = [
         {
             category: "tops",
-            name: "H&M summer top",
+            name: "Summer Top",
             description: "some top's description",
             size: "XS",
             price: 12.5,
@@ -35,7 +35,7 @@ export async function insertData() {
         },
         {
             category: "outerwear",
-            name: "Adidas sweatshirt",
+            name: "Adidas Sweatshirt",
             description: "some sweatshirt's description",
             size: "L",
             price: 120,
