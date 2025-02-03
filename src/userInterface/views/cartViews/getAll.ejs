@@ -84,9 +84,9 @@
             align-items: center;
             justify-content: center;
             width: 150px;
-            height: 40px;
+            height: 50px;
             margin: 5px;
-            padding: 5px 10px;
+            padding: 10px 20px;
             font-size: 16px;
             text-align: center;
             text-decoration: none;
@@ -96,13 +96,14 @@
             border: none;
             cursor: pointer;
             transition: background 0.3s;
+            box-sizing: border-box;
+            line-height: 1.5;
         }
 
         .buttons a:hover,
         .buttons form button:hover {
             background-color: #218838;
         }
-
     </style>
 </head>
 
@@ -122,7 +123,7 @@
                 </tr>
             </thead>
             <tbody>
-                <% if (mappedItems.length > 0) { %>
+                <% if (mappedItems.length> 0) { %>
                     <% mappedItems.forEach(item=> { %>
                         <tr>
                             <td>
@@ -140,7 +141,7 @@
                                 <%= item.price * item.quantity %> USD
                             </td>
                             <td>
-                                <%= item.size %> 
+                                <%= item.size %>
                             </td>
                             <td>
                                 <form action="/cart/removeItem" method="POST" class="actions">
@@ -175,15 +176,17 @@
                 <input type="hidden" name="cartId" value="<%= cartId %>">
                 <button type="submit">Create Order</button>
             </form>
-            <a href="/users" class="buttons">Back to User Panel</a>
+            <a href="/users">Back to User Panel</a>
         </div>
 
     </div>
 
     <% if (message) { %>
-        <p style="color: red;"><%= message %></p>
-    <% } %>
-    
+        <p style="color: red;">
+            <%= message %>
+        </p>
+        <% } %>
+
 </body>
 
 </html>

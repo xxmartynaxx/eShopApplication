@@ -10,6 +10,76 @@
     <style>
         body {
             font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f9f9f9;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 20px auto;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            background-color: #fff;
+        }
+
+        a {
+            text-decoration: none;
+            color: #007BFF;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+
+        .cart-link {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #007BFF;
+            color: #fff;
+            border-radius: 4px;
+            transition: background-color 0.3s;
+        }
+
+        .cart-link:hover {
+            background-color: #0056b3;
+        }
+
+        .filter-section {
+            margin-bottom: 20px;
+        }
+
+        .filter-section form {
+            margin-bottom: 10px;
+        }
+
+        .filter-section label {
+            font-weight: bold;
+            margin-right: 10px;
+        }
+
+        .filter-section input[type="text"],
+        .filter-section input[type="number"],
+        .filter-section select {
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+
+        .filter-section button {
+            padding: 8px 16px;
+            background-color: #28a745;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .filter-section button:hover {
+            background-color: #218838;
         }
 
         .product-list {
@@ -22,125 +92,163 @@
             border-radius: 8px;
             padding: 15px;
             margin: 10px 0;
+            background-color: #f2f2f2;
         }
 
         .product-item h3 {
-            margin: 0;
+            margin: 0 0 10px 0;
+            color: #333;
+        }
+
+        .product-item p {
+            margin: 5px 0;
+            color: #555;
         }
 
         .product-item form {
             margin-top: 10px;
         }
 
+        .product-item label {
+            font-weight: bold;
+            margin-right: 10px;
+        }
+
+        .product-item input[type="number"] {
+            padding: 5px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+
         .product-item button {
-            background-color: #007BFF;
-            color: white;
-            border: none;
             padding: 5px 10px;
+            background-color: #007BFF;
+            color: #fff;
+            border: none;
             border-radius: 4px;
             cursor: pointer;
+            transition: background-color 0.3s;
         }
 
         .product-item button:hover {
             background-color: #0056b3;
         }
+
+        .homepage-link {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 10px 20px;
+            background-color: #28a745;
+            color: #fff;
+            border-radius: 4px;
+            text-align: center;
+            transition: background-color 0.3s;
+        }
+
+        .homepage-link:hover {
+            background-color: #218838;
+        }
     </style>
 </head>
 
 <body>
+    <div class="container">
+        <!-- Cart Link -->
+        <% if (userIsLoggedIn) { %>
+            <a href="/cart/getAll" class="cart-link">Cart</a>
+            <br><br>
+            <% } %>
 
-    <% if (userIsLoggedIn) { %>
-        <a href="/cart/getAll">Cart</a>
-        <br><br>
-    <% } %>
+                <!-- Sorting and Filtering Section -->
+                <div class="filter-section">
+                    <!-- Product Search -->
+                    <form method="GET" action="/products/search">
+                        <input type="text" name="productName" placeholder="Search for a product" required>
+                        <button type="submit">Search</button>
+                    </form><br>
 
-    <!-- Sorting and Filtering Section -->
-    <div>
-        <!-- Form for product search -->
-        <form method="GET" action="/products/search">
-            <input type="text" name="productName" placeholder="Search for a product" required>
-            <button type="submit">Search</button><br>
-        </form>
+                    <!-- Price Filter -->
+                    <form method="GET" action="/products/filterByPrice">
+                        <label for="minPrice">Min Price:</label>
+                        <input type="number" id="minPrice" name="minPrice" placeholder="Min Price">
+                        <label for="maxPrice">  Max Price:</label>
+                        <input type="number" id="maxPrice" name="maxPrice" placeholder="Max Price">
+                        <button type="submit">Filter by Price</button>
+                    </form><br>
 
-        <!-- Price Filter -->
-        <form method="GET" action="/products/filterByPrice">
-            <br><label for="minPrice">Min Price:</label>
-            <input type="number" id="minPrice" name="minPrice" placeholder="Min Price">
-            <label for="maxPrice">Max Price:</label>
-            <input type="number" id="maxPrice" name="maxPrice" placeholder="Max Price">
-            <button type="submit">Filter by Price</button><br>
-        </form>
+                    <!-- Category Filter -->
+                    <form method="GET" action="/products/filterByCategory">
+                        <label for="category">Category:<br></label><br>
+                        <% categories.forEach(category=> { %>
+                            <label>
+                                <input type="radio" name="category" value="<%= category %>">
+                                <%= category %>
+                            </label><br>
+                            <% }) %>
+                                <br><button type="submit">Filter by Category</button>
+                    </form><br>
 
-        <!-- Category Filter -->
-        <form method="GET" action="/products/filterByCategory">
-            <br><label for="category">Category:</label><br>
-            <% categories.forEach(category=> { %>
-                <label>
-                    <input type="radio" name="category" value="<%= category %>">
-                    <%= category %>
-                </label><br>
-                <% }) %>
-                    <button type="submit">Filter by Category</button><br>
-        </form>
+                    <!-- Size Filter -->
+                    <form method="GET" action="/products/filterBySize">
+                        <label for="size">Size:<br></label><br>
+                        <% sizes.forEach(size=> { %>
+                            <label>
+                                <input type="radio" name="size" value="<%= size %>">
+                                <%= size %>
+                            </label><br>
+                            <% }) %>
+                                <br><button type="submit">Filter by Size</button>
+                    </form><br>
 
-        <!-- Size Filter -->
-        <form method="GET" action="/products/filterBySize">
-            <br><label for="size">Size:</label><br>
-            <% sizes.forEach(size=> { %>
-                <label>
-                    <input type="radio" name="size" value="<%= size %>">
-                    <%= size %>
-                </label><br>
-                <% }) %>
-                    <button type="submit">Filter by Size</button><br>
-        </form>
-
-        <!-- Sort by Price -->
-        <form method="GET" action="/products/sortByPrice">
-            <br><label for="sortOrder">Sort by Price:</label>
-            <select id="sortOrder" name="sortOrder">
-                <option value="ASC">Low to High</option>
-                <option value="DESC">High to Low</option>
-            </select>
-            <button type="submit">Sort</button>
-        </form>
-    </div>
-
-    <!-- Product List -->
-    <ul class="product-list">
-        <% if (products && products.length) { %>
-            <% products.forEach(product=> { %>
-                <li class="product-item">
-                    <h3>
-                        <a href="/products/<%= product._id %>">
-                          <%= product.name %>
-                        </a>
-                    </h3>
-
-                    <p>Price: $<%= product.price %></p>
-
-                    <p>Size: <%= product.size %></p>
-                    
-                    <p>Category: <%= product.category %></p>
-
-                    <p>Description: <%= product.description %></p>
-
-                    <!-- Add to Cart Form -->
-                    <form action="/cart/addItem" method="POST">
-                        <input type="hidden" name="productId" value="<%= product._id %>">
-                        <label for="quantity_<%= product._id %>">Quantity:</label>
-                        <input type="number" id="quantity_<%= product._id %>" name="quantity" value="1" min="1"
-                            required>
-                        <button type="submit">Add to Cart</button>
+                    <!-- Sort by Price -->
+                    <form method="GET" action="/products/sortByPrice">
+                        <label for="sortOrder">Sort by Price:</label>
+                        <select id="sortOrder" name="sortOrder">
+                            <option value="ASC">Low to High</option>
+                            <option value="DESC">High to Low</option>
+                        </select>
+                        <button type="submit">Sort</button>
                     </form>
-                </li>
-                <% }) %>
-                    <% } else { %>
-                        <li>No products available.</li>
-                        <% } %>
-    </ul>
-    <br>
-    <a href="/">Homepage</a>
+                </div>
+
+                <!-- Product List -->
+                <ul class="product-list">
+                    <% if (products && products.length) { %>
+                        <% products.forEach(product=> { %>
+                            <li class="product-item">
+                                <h3>
+                                    <a href="/products/<%= product._id %>">
+                                        <%= product.name %>
+                                    </a>
+                                </h3>
+                                <p>Price: $<%= product.price %>
+                                </p>
+                                <p>Size: <%= product.size %>
+                                </p>
+                                <p>Category: <%= product.category %>
+                                </p>
+                                <p>Description: <%= product.description %>
+                                </p>
+
+                                <!-- Add to Cart Form -->
+                                <form action="/cart/addItem" method="POST">
+                                    <input type="hidden" name="productId" value="<%= product._id %>">
+                                    <label for="quantity_<%= product._id %>">Quantity:</label>
+                                    <input type="number" id="quantity_<%= product._id %>" name="quantity" value="1"
+                                        min="1" required>
+                                    <button type="submit">Add to Cart</button>
+                                </form>
+                            </li>
+                            <% }) %>
+                                <% } else { %>
+                                    <li>No products available.</li>
+                                    <% } %>
+                </ul>
+
+                <!-- Homepage Link -->
+                <a href="/" class="homepage-link">Homepage</a>
+    </div>
 </body>
 
 </html>
