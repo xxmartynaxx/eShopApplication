@@ -7,24 +7,86 @@
     <title>
         <%= title %>
     </title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f9f9f9;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            background-color: #fff;
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        li {
+            margin: 10px 0;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            background-color: #f2f2f2;
+            font-family: monospace;
+            white-space: pre-wrap;
+            /* Zachowuje formatowanie JSON */
+        }
+
+        p {
+            text-align: center;
+            color: #555;
+        }
+
+        a {
+            display: block;
+            text-align: center;
+            margin-top: 20px;
+            padding: 10px;
+            background-color: #007BFF;
+            color: #fff;
+            text-decoration: none;
+            border-radius: 4px;
+            transition: background-color 0.3s;
+        }
+
+        a:hover {
+            background-color: #0056b3;
+        }
+    </style>
 </head>
 
 <body>
-    <h1>List of <%= type %></h1>
-    <% if (Array.isArray(data) && data.length > 0) { %>
-        <ul>
-            <% data.forEach(item=> { %>
-                <li>
-                    <%= JSON.stringify(item, null, 2) %>
-                </li>
-                <% }); %>
-        </ul>
-    <% } else { %>
-        <p>
-            <%= message %>
-        </p>
-    <% } %>
-    <a href="/admin">Back to home</a>
+    <div class="container">
+        <h1>List of <%= type %>
+        </h1>
+        <% if (Array.isArray(data) && data.length> 0) { %>
+            <ul>
+                <% data.forEach(item=> { %>
+                    <li>
+                        <%= JSON.stringify(item, null, 2) %>
+                    </li>
+                    <% }); %>
+            </ul>
+            <% } else { %>
+                <p>
+                    <%= message %>
+                </p>
+                <% } %>
+                    <a href="/admin">Back to home</a>
+    </div>
 </body>
 
 </html>

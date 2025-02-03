@@ -7,53 +7,130 @@
     <title>
         <%= title %>
     </title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f9f9f9;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 20px auto;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            background-color: #fff;
+        }
+
+        h2 {
+            text-align: center;
+            color: #333;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+        }
+
+        label {
+            margin-top: 10px;
+            font-weight: bold;
+            color: #555;
+        }
+
+        input[type="text"],
+        input[type="number"],
+        textarea {
+            padding: 8px;
+            margin-top: 5px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+
+        textarea {
+            resize: vertical;
+            height: 100px;
+        }
+
+        input[type="radio"] {
+            margin-right: 10px;
+        }
+
+        button {
+            margin-top: 20px;
+            padding: 10px;
+            background-color: #007BFF;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        .error-message {
+            color: red;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+    </style>
 </head>
 
 <body>
+    <div class="container">
+        <% if (error) { %>
+            <p class="error-message">
+                <%= error %>
+            </p>
+            <% } %>
 
-    <% if (error) { %>
-        <p style="color: red;">
-            <%= error %>
-        </p>
-    <% } %>
+                <h2>Modify a Product</h2>
+                <form action="/admin/modifyProduct" method="POST">
+                    <input type="hidden" name="productId" value="<%= product._id ? product._id.toString() : '' %>">
 
-    <h2>Modify a Product</h2>
-    <form action="/admin/modifyProduct" method="POST">
-        
-        <input type="hidden" name="productId" value="<%= product._id ? product._id.toString() : '' %>">
+                    <!-- Category Selection (Radio Buttons) -->
+                    <label>Category:</label><br>
+                    <% availableCategories.forEach(category=> { %>
+                        <label>
+                            <input type="radio" name="category" value="<%= category %>" <%=product.category===category
+                                ? "checked" : "" %> required>
+                            <%= category %>
+                        </label><br>
+                        <% }) %><br>
 
-        <!-- Category Selection (Radio Buttons) -->
-        <label>Category:</label><br>
-        <% availableCategories.forEach(category => { %>
-            <label>
-                <input type="radio" name="category" value="<%= category %>" <%= product.category === category ? "checked" : "" %> required>
-                <%= category %>
-            </label><br>
-        <% }) %><br>
+                            <label for="name">Name:</label>
+                            <input type="text" name="name" value="<%= product.name %>" required><br><br>
 
-        <label for="name">Name:</label>
-        <input type="text" name="name" value="<%= product.name %>" required><br><br>
+                            <label for="descr">Description:</label>
+                            <textarea name="descr"><%= product.description %></textarea><br><br>
 
-        <label for="descr">Description:</label>
-        <textarea name="descr"><%= product.description %></textarea><br><br>
+                            <!-- Size Selection (Radio Buttons) -->
+                            <label>Sizes:</label><br>
+                            <% availableSizes.forEach(size=> { %>
+                                <label>
+                                    <input type="radio" name="size" value="<%= size %>" <%=product.size===size
+                                        ? "checked" : "" %> required>
+                                    <%= size %>
+                                </label><br>
+                                <% }) %> <br>
 
-        <!-- Size Selection (Radio Buttons) -->
-        <label>Sizes:</label><br>
-        <% availableSizes.forEach(size => { %>
-            <label>
-                <input type="radio" name="size" value="<%= size %>" <%= product.size === size ? "checked" : "" %> required>
-                <%= size %>
-            </label><br>
-        <% }) %> <br>
+                                    <label for="price">Price:</label>
+                                    <input type="number" name="price" step="0.01" value="<%= product.price %>"
+                                        required><br><br>
 
-        <label for="price">Price:</label>
-        <input type="number" name="price" step="0.01" value="<%= product.price %>" required><br><br>
+                                    <label for="stock">Stock:</label>
+                                    <input type="number" name="stock" value="<%= product.stock %>" required><br><br>
 
-        <label for="stock">Stock:</label>
-        <input type="number" name="stock" value="<%= product.stock %>" required><br><br>
-
-        <button type="submit">Modify Product</button>
-    </form>
+                                    <button type="submit">Modify Product</button>
+                </form>
+    </div>
 </body>
 
 </html>
