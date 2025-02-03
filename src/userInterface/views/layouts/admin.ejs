@@ -1,4 +1,3 @@
-<!-- Strona główna admina -->
 <!DOCTYPE html>
 <html lang="en">
 
@@ -8,24 +7,118 @@
     <title>
         <%= title %>
     </title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f9f9f9;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            background-color: #fff;
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+
+        p {
+            text-align: center;
+            color: #555;
+        }
+
+        ul {
+            list-style-type: none;
+            padding: 0;
+            text-align: center;
+        }
+
+        li {
+            margin: 10px 0;
+        }
+
+        a {
+            display: inline-block;
+            width: 200px;
+            /* Stała szerokość przycisków */
+            padding: 10px 20px;
+            color: #fff;
+            text-decoration: none;
+            border-radius: 4px;
+            transition: background-color 0.3s;
+            text-align: center;
+        }
+
+        /* Trzy odcienie niebieskiego */
+        a.blue-1 {
+            background-color: #007BFF;
+            /* Główny niebieski */
+        }
+
+        a.blue-2 {
+            background-color: #0056b3;
+            /* Ciemniejszy niebieski */
+        }
+
+        a.blue-3 {
+            background-color: #0069d9;
+            /* Pośredni niebieski */
+        }
+
+        a:hover {
+            opacity: 0.9;
+            /* Lekkie przyciemnienie przy najechaniu */
+        }
+
+        .logout-link {
+            background-color: #dc3545;
+            /* Czerwony dla "Log Out" */
+        }
+
+        .logout-link:hover {
+            background-color: #c82333;
+        }
+
+        .homepage-link {
+            display: block;
+            width: auto;
+            /* Szerokość dostosowana do zawartości */
+            margin: 20px auto 0;
+            background-color: #28a745;
+            /* Zielony dla "Homepage" */
+        }
+
+        .homepage-link:hover {
+            background-color: #218838;
+        }
+    </style>
 </head>
 
 <body>
-    <h1>Welcome to the Admin Panel</h1>
-    <p>Here are your available actions:</p>
-    <ul>
-        <li> <a href="/admin/addProduct">Add a new Product</a> </li>
-        <li> <a href="/admin/removeProduct">Remove a Product</a> </li>
-        <li> <a href="/admin/modifyProduct">Modify a Product</a> </li>
-        <li> <a href="/admin/getAll?type=users">Get the Users</a> </li>
-        <li> <a href="/admin/getAll?type=carts">Get the Carts</a> </li>
-        <li> <a href="/admin/getAll?type=orders">Get the Orders</a> </li>
-        <li> <a href="/admin/getAll?type=products">Get the Products</a> </li>
+    <div class="container">
+        <h1>Welcome to the Admin Panel</h1>
+        <p>Here are your available actions:</p>
+        <ul>
+            <li><a href="/admin/addProduct" class="blue-1">Add a new Product</a></li>
+            <li><a href="/admin/removeProduct" class="blue-2">Remove a Product</a></li>
+            <li><a href="/admin/modifyProduct" class="blue-3">Modify a Product</a></li>
+            <li><a href="/admin/getAll?type=users" class="blue-1">Get the Users</a></li>
+            <li><a href="/admin/getAll?type=carts" class="blue-2">Get the Carts</a></li>
+            <li><a href="/admin/getAll?type=orders" class="blue-3">Get the Orders</a></li>
+            <li><a href="/admin/getAll?type=products" class="blue-1">Get the Products</a></li>
+            <br>
+            <li><a href="/users/logout" class="logout-link">Log Out</a></li>
+        </ul>
         <br>
-        <li> <a href="/users/logout">Log Out</a> </li>
-    </ul>
-    <br>
-    <a href="/">Homepage</a>
+        <a href="/" class="homepage-link">Homepage</a>
+    </div>
 </body>
 
 </html>
