@@ -73,7 +73,7 @@ export class CartRepoInfr {
             return { numOfCartItems: 0, totalCost: 0 };
         }
 
-        const numOfCartItems = cartItems.length;
+        var numOfCartItems = 0;
 
         var totalCost = 0;
 
@@ -82,6 +82,7 @@ export class CartRepoInfr {
                 where: { _id: item.product }
             });
             totalCost = totalCost + (product!.price) * item.quantity;
+            numOfCartItems += item.quantity
         }
 
         return { numOfCartItems, totalCost };
